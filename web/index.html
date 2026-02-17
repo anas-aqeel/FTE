@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AcademiQ - Your AI-Powered Academic Assistant</title>
+    <meta name="description" content="Never miss a deadline again. AcademiQ aggregates Gmail, Google Classroom, and WhatsApp into one intelligent conversational interface." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#256af4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0B0B0B", // Deep black requested
+                        "navy-dark": "#0f1420",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                        "glass-bg": "rgba(255, 255, 255, 0.03)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #222 1px, transparent 1px), linear-gradient(to bottom, #222 1px, transparent 1px)",
+                        'glow-mesh': "radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.15), transparent 50%), radial-gradient(circle at 0% 50%, rgba(37, 106, 244, 0.1), transparent 50%)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0B0B;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .glass-card {
+            background: rgba(20, 20, 30, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-primary {
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0B0B0B;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark min-h-screen flex flex-col antialiased selection:bg-primary/30 selection:text-white">
+    <header class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0B0B0B]/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined text-white text-[20px]">school</span>
+                </div>
+                <h1 class="font-bold text-lg tracking-tight text-white">AcademiQ</h1>
+            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                    href="#features">Features</a>
+                <a class="text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#how-it-works">How
+                    it Works</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button class="hidden sm:flex text-sm font-medium text-gray-300 hover:text-white transition-colors">Log
+                    in</button>
+                <button
+                    class="bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold py-2 px-4 rounded-full border border-white/10 transition-all duration-300 backdrop-blur-sm">
+                    Join Waitlist
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow pt-24 relative overflow-hidden">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-30 pointer-events-none">
+        </div>
+        <div
+            class="absolute top-[20%] right-0 w-[800px] h-[600px] bg-purple-600/10 rounded-full blur-[100px] -z-10 opacity-20 pointer-events-none">
+        </div>
+        <section
+            class="relative max-w-7xl mx-auto px-6 pt-10 pb-24 md:pt-20 md:pb-32 flex flex-col items-center text-center z-10">
+            <div class="absolute inset-0 bg-grid -z-10 pointer-events-none"></div>
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm animate-fade-in-up">
+                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                <span class="text-xs font-medium text-primary-200">Coming Soon - Early 2026</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6 max-w-4xl text-gradient">
+                Never Miss a Deadline <br class="hidden md:block" /> Again.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-10 font-light leading-relaxed">
+                Stop drowning in scattered emails, group chats, and assignments. AcademiQ aggregates Gmail, Google Classroom, and WhatsApp into one intelligent AI assistant.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <div class="relative group w-full sm:w-auto">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-primary to-indigo-600 rounded-lg blur opacity-40 group-hover:opacity-75 transition duration-200">
+                    </div>
+                    <button
+                        class="relative w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-lg font-semibold flex items-center justify-center gap-2 border border-white/10 hover:bg-gray-900 transition-all">
+                        <span>Join Waitlist</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </div>
+                <button
+                    class="w-full sm:w-auto px-8 py-3.5 rounded-lg font-medium text-gray-300 hover:text-white transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">play_circle</span>
+                    View Demo
+                </button>
+            </div>
+            <div class="mt-20 w-full max-w-5xl relative group perspective-1000">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-b from-primary/20 to-transparent rounded-xl blur-xl opacity-20">
+                </div>
+                <div
+                    class="relative bg-[#0f1420] border border-white/10 rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-700 hover:scale-[1.01] hover:rotate-x-2">
+                    <div class="h-12 border-b border-white/5 bg-white/[0.02] flex items-center px-4 gap-2">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                        </div>
+                        <div class="mx-auto w-64 h-6 bg-white/5 rounded-md"></div>
+                    </div>
+                    <div class="flex h-[400px] md:h-[500px]">
+                        <div class="w-64 border-r border-white/5 bg-black/20 hidden md:flex flex-col p-4 gap-4">
+                            <div class="h-8 w-full bg-white/5 rounded animate-pulse"></div>
+                            <div class="h-4 w-3/4 bg-white/5 rounded animate-pulse opacity-60"></div>
+                            <div class="h-4 w-1/2 bg-white/5 rounded animate-pulse opacity-60"></div>
+                            <div class="h-4 w-5/6 bg-white/5 rounded animate-pulse opacity-60"></div>
+                            <div class="mt-auto flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-white/10"></div>
+                                <div class="flex-1 h-8 bg-white/5 rounded"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex flex-col relative bg-gradient-to-b from-[#0f1420] to-[#0B0B0B]">
+                            <div class="flex-1 p-8 flex flex-col gap-6 overflow-hidden relative">
+                                <div
+                                    class="self-end max-w-[80%] bg-primary/20 border border-primary/20 text-white p-4 rounded-2xl rounded-tr-none backdrop-blur-sm">
+                                    <p class="text-sm">What are my upcoming deadlines this week?</p>
+                                </div>
+                                <div
+                                    class="self-start max-w-[80%] bg-white/5 border border-white/10 text-gray-300 p-4 rounded-2xl rounded-tl-none backdrop-blur-sm">
+                                    <div
+                                        class="flex items-center gap-2 mb-2 text-primary-300 text-xs font-bold uppercase tracking-wider">
+                                        <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                                        AcademiQ AI
+                                    </div>
+                                    <p class="text-sm leading-relaxed mb-3">Here's what you need to focus on:</p>
+                                    <ul class="text-sm list-disc list-inside space-y-2 text-gray-400">
+                                        <li><strong class="text-white">CS 101 Project:</strong> Due Friday, Feb 21 at 11:59 PM (3 days remaining)</li>
+                                        <li><strong class="text-white">Physics Lab Report:</strong> Due Monday, Feb 24 at 9:00 AM (6 days remaining)</li>
+                                        <li><strong class="text-white">Math Quiz:</strong> Scheduled for Thursday, Feb 20 at 2:00 PM</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t border-white/5 bg-white/[0.02]">
+                                <div class="relative flex items-center">
+                                    <div class="absolute left-4 text-gray-500">
+                                        <span class="material-symbols-outlined">add_circle</span>
+                                    </div>
+                                    <input
+                                        class="w-full bg-black/40 border border-white/10 rounded-lg py-3 pl-12 pr-12 text-sm text-gray-300 focus:outline-none focus:border-primary/50 transition-colors"
+                                        disabled="" placeholder="Ask anything about your coursework..." type="text" />
+                                    <div class="absolute right-3 p-1 rounded bg-white/10">
+                                        <span
+                                            class="material-symbols-outlined text-sm text-gray-400">arrow_upward</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/5 to-transparent pointer-events-none">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-24 relative" id="features">
+            <div class="absolute inset-0 bg-background-dark"></div>
+            <div
+                class="absolute bottom-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none">
+            </div>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none">
+            </div>
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="mb-16 md:text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">All your academic data, <span
+                            class="text-gradient-primary">one conversation</span></h2>
+                    <p class="text-gray-400 text-lg">Stop switching between apps. AcademiQ automatically syncs and intelligently filters information from all your sources.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">mail</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Gmail Integration</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Automatic hourly email ingestion with AI-powered importance scoring. Never miss critical announcements buried in your inbox.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">school</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Google Classroom Sync</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Automatic assignment and announcement tracking. All your coursework deadlines in one intelligent dashboard.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">chat</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">WhatsApp Monitoring</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">24/7 group chat monitoring with hourly AI summaries. Extract important deadlines from hundreds of messages automatically.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6 text-amber-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Conversational AI</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Ask natural questions like "What's due tomorrow?" or "Summarize today's announcements" - powered by Google Gemini.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-6 text-pink-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">target</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Smart Filtering</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">AI + rule-based importance scoring separates signal from noise. Focus on what matters, ignore the rest.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-xl group hover:bg-white/[0.06] transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined">notifications</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Intelligent Alerts</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Receive email notifications only for urgent, high-priority items. Stay informed without notification fatigue.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-24 relative overflow-hidden" id="how-it-works">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">How it works</h2>
+                    <p class="text-gray-400">Connect once, stay organized forever.</p>
+                </div>
+                <div class="relative">
+                    <div
+                        class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary/50 to-transparent">
+                    </div>
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 group">
+                        <div class="flex-1 md:text-right order-2 md:order-1">
+                            <h3 class="text-2xl font-bold text-white mb-2">Connect Your Accounts</h3>
+                            <p class="text-gray-400 text-sm">One-time OAuth setup for Gmail, Google Classroom, and WhatsApp. Secure token storage with automatic refresh.</p>
+                        </div>
+                        <div
+                            class="relative z-10 w-8 h-8 rounded-full bg-black border-2 border-primary shadow-[0_0_15px_rgba(37,106,244,0.5)] flex items-center justify-center order-1 md:order-2 shrink-0">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                        <div class="flex-1 order-3 pl-12 md:pl-0">
+                            <div
+                                class="h-32 w-full max-w-xs bg-white/5 rounded-lg border border-white/10 p-4 flex flex-col gap-3 group-hover:border-primary/30 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-10 bg-red-500/20 rounded-sm border border-red-500/40"></div>
+                                    <div class="flex flex-col gap-1 w-full">
+                                        <div class="h-2 w-3/4 bg-white/10 rounded"></div>
+                                        <div class="h-2 w-1/2 bg-white/10 rounded"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-auto h-1 w-full bg-primary/20 rounded-full overflow-hidden">
+                                    <div class="h-full w-2/3 bg-primary"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-16 group">
+                        <div class="flex-1 md:text-right order-2 md:order-1 hidden md:block">
+                            <div
+                                class="h-32 w-full max-w-xs ml-auto bg-white/5 rounded-lg border border-white/10 p-4 flex flex-col gap-2 group-hover:border-primary/30 transition-colors">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="text-xs text-gray-400">Processing...</div>
+                                    <span
+                                        class="material-symbols-outlined text-primary text-sm animate-spin">sync</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="flex-1 h-16 bg-white/5 rounded border border-white/5"></div>
+                                    <div class="flex-1 h-16 bg-white/5 rounded border border-white/5"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="relative z-10 w-8 h-8 rounded-full bg-black border-2 border-primary shadow-[0_0_15px_rgba(37,106,244,0.5)] flex items-center justify-center order-1 md:order-2 shrink-0">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                        <div class="flex-1 order-3 md:text-left pl-12 md:pl-0">
+                            <h3 class="text-2xl font-bold text-white mb-2">AI Organizes Everything</h3>
+                            <p class="text-gray-400 text-sm">Automatic hourly ingestion from all sources. AI classifies, scores importance, and extracts deadlines from every message.</p>
+                            <div
+                                class="md:hidden mt-4 h-32 w-full max-w-xs bg-white/5 rounded-lg border border-white/10 p-4 flex flex-col gap-2">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="text-xs text-gray-400">Processing...</div>
+                                    <span
+                                        class="material-symbols-outlined text-primary text-sm animate-spin">sync</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="flex-1 h-16 bg-white/5 rounded border border-white/5"></div>
+                                    <div class="flex-1 h-16 bg-white/5 rounded border border-white/5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 md:gap-16 group">
+                        <div class="flex-1 md:text-right order-2 md:order-1">
+                            <h3 class="text-2xl font-bold text-white mb-2">Just Ask Questions</h3>
+                            <p class="text-gray-400 text-sm">Chat naturally with your personal assistant. "What's due this week?" "Summarize today's group chat" - instant, accurate answers.</p>
+                        </div>
+                        <div
+                            class="relative z-10 w-8 h-8 rounded-full bg-black border-2 border-primary shadow-[0_0_15px_rgba(37,106,244,0.5)] flex items-center justify-center order-1 md:order-2 shrink-0">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                        <div class="flex-1 order-3 pl-12 md:pl-0">
+                            <div
+                                class="h-32 w-full max-w-xs bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-lg border border-primary/30 p-4 flex items-center justify-center group-hover:shadow-[0_0_30px_rgba(37,106,244,0.2)] transition-shadow">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-white mb-1">A+</div>
+                                    <div class="text-xs text-primary-200 uppercase tracking-widest">Grade Goal</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-24 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent pointer-events-none"></div>
+            <div
+                class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent">
+            </div>
+            <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+                <div class="inline-block mb-6">
+                    <span
+                        class="py-1 px-3 rounded-full bg-primary/10 text-primary-300 text-xs font-semibold tracking-wide uppercase border border-primary/20">Coming
+                        Soon</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">Be the first to never miss a deadline.</h2>
+                <p class="text-gray-400 text-lg mb-10 max-w-xl mx-auto">Join the waitlist for early access. Launching early 2026 with limited beta spots.</p>
+                <form class="max-w-md mx-auto relative flex items-center group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-500">
+                    </div>
+                    <div
+                        class="relative flex w-full p-1 bg-[#0f1420] border border-white/10 rounded-lg focus-within:border-primary/50 transition-colors">
+                        <input
+                            class="flex-1 bg-transparent border-none text-white px-4 py-3 placeholder-gray-500 focus:ring-0 focus:outline-none w-full"
+                            placeholder="enter your university email" required="" type="email" />
+                        <button
+                            class="bg-white text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition-colors whitespace-nowrap"
+                            type="submit">
+                            Join Now
+                        </button>
+                    </div>
+                </form>
+                <p class="mt-6 text-xs text-gray-500">No spam. Unsubscribe anytime.</p>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-white/5 bg-[#0B0B0B] py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-primary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-[14px]">school</span>
+                </div>
+                <span class="text-white font-bold text-sm">AcademiQ</span>
+            </div>
+            <div class="flex gap-8">
+                <a class="text-sm text-gray-500 hover:text-white transition-colors" href="#">Privacy</a>
+                <a class="text-sm text-gray-500 hover:text-white transition-colors" href="#">Terms</a>
+                <a class="text-sm text-gray-500 hover:text-white transition-colors" href="#">Twitter</a>
+                <a class="text-sm text-gray-500 hover:text-white transition-colors" href="#">Contact</a>
+            </div>
+            <div class="text-sm text-gray-600">
+                © 2026 AcademiQ. Built with ❤️ for students.
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
