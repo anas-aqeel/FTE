@@ -38,7 +38,9 @@ Set up Celery with Redis and implement Gmail ingestion worker (emails + optional
 - [ ] Celery worker runs successfully
 - [ ] Celery Beat schedules hourly Gmail ingestion
 - [ ] Gmail API OAuth works
-- [ ] Emails are fetched and saved to raw_emails
+- [ ] Emails are fetched (last 30 days on first sync)
+- [ ] Self-notification emails filtered out (X-Assistant-Notification header)
+- [ ] Emails saved to raw_emails
 - [ ] Gemini classifies and scores each email
 - [ ] Rule-based scoring applied
 - [ ] Filtered data saved to emails table
@@ -49,5 +51,4 @@ Set up Celery with Redis and implement Gmail ingestion worker (emails + optional
 
 ## Dependencies
 
-- Backend sync status endpoint (for Celery client)
-- Database schema complete
+- Database schema complete (all 3 database tickets)

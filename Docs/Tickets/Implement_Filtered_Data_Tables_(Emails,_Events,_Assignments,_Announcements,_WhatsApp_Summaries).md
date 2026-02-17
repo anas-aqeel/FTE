@@ -13,7 +13,9 @@ Create all filtered/processed data tables for storing AI-processed, labeled, and
   - `assignments` (id, user_id, raw_assignment_id, course_name, title, description, due_date, importance_score, status, is_seen, source, processed_at)
   - `announcements` (id, user_id, source_type, source_id, title, content, announced_by, importance_score, category, is_seen, announced_at, processed_at)
   - `whatsapp_summaries` (id, user_id, raw_message_id, chat_name, is_group, summary, key_points, mentioned_deadlines, importance_score, is_seen, batch_start_time, batch_end_time, processed_at)
-- Set up foreign keys to raw tables
+- Set up foreign keys to raw tables with `ON DELETE SET NULL` (filtered data survives raw cleanup)
+- Set up foreign keys to users table with `ON DELETE CASCADE`
+- Set up foreign keys to conversations table with `ON DELETE CASCADE`
 - Create indexes on user_id, importance_score, is_seen, timestamps
 
 **Out of Scope:**

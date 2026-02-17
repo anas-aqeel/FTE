@@ -17,6 +17,7 @@ Implement Celery maintenance tasks for OAuth token refresh, raw data cleanup, an
 - Urgent notification task (`send_urgent_notifications`):
   - Runs frequently or inline during ingestion
   - Sends email via Gmail API for items with importance_score > threshold
+  - Adds custom header `X-Assistant-Notification: true` to prevent re-ingestion loop
   - Marks notifications as sent
 
 **Out of Scope:**

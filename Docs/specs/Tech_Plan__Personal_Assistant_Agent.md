@@ -18,6 +18,7 @@ The system follows a **microservices architecture** with five core components:
 **1. Dual-Data Storage Strategy**
 
 All ingested data is stored in two forms:
+
 - **Raw Data**: Unprocessed, original data from sources (safety net, fallback)
 - **Filtered Data**: AI-processed, labeled, and scored data (optimized for queries)
 
@@ -68,8 +69,11 @@ The WhatsApp service persists the in-progress 1-hour message buffer to local dis
 **9. Controlled WhatsApp Summarization Scope (Cost Management)**
 
 Hourly WhatsApp summarization covers (regardless of WhatsApp read/unread state):
+
 - **All private chats** (messages in the last hour)
 - **Only a configured allowlist of groups** (messages in the last hour)
+
+**Empty Allowlist Behavior:** If `whatsapp_group_allowlist` is empty or null, **no groups are summarized** (only private chats). This is the safe default to prevent unexpected costs.
 
 Other group chats may be stored as raw hourly batches (optional) but are not summarized unless explicitly enabled.
 
@@ -87,9 +91,24 @@ All ingestion pipelines are idempotent. Each source maintains a cursor (last suc
 
 Raw data tables retain data for **14 days**, while filtered/processed tables are retained longer-term (subject to storage constraints).
 
+**Cleanup Behavior:** The daily cleanup task deletes raw rows older than 14 days. Filtered data survives with null FK references (see Foreign Key Cascade Strategy).
+
 **Rationale**: Raw data is valuable for fallback and re-processing, but has higher storage and privacy cost.
 
 **12. Urgent Notifications via Email (Phase 1)**
+
+
+**13. Initial Sync Backfill Limit (30 Days)**
+
+On first-time setup when no cursor exists in `sync_state`, ingestion tasks fetch only the **last 30 days** of data from each source.
+
+**Rationale**: Prevents overwhelming initial sync (thousands of emails/assignments), reduces API costs, and provides reasonable historical context. Configurable via environment variable if user needs longer history.
+
+**14. Self-Notification Loop Prevention**
+
+Urgent notification emails sent via Gmail API are tagged with a custom header (`X-Assistant-Notification: true`) and filtered out during Gmail ingestion to prevent infinite loops.
+
+**Rationale**: Without this, urgent emails would be re-ingested, potentially triggering more notifications.
 
 For urgent/important items detected during ingestion, the system sends an email notification to the user.
 
@@ -111,7 +130,7 @@ sequenceDiagram
 
     Note over User,Supabase: User Query Flow
     User->>Frontend: Ask question
-    Frontend->>Backend: POST /chat/message
+    Frontend->>Backend: POST /conversations/{id}/messages
     Backend->>Supabase: Fetch conversation history
     Backend->>Supabase: Query filtered data
     alt Data found in filtered tables
@@ -126,12 +145,12 @@ sequenceDiagram
     Frontend-->>User: Display response
 
     Note over User,Supabase: Data Ingestion Flow (Gmail/Classroom)
-    Celery->>Backend: Trigger scheduled ingestion
-    Backend->>Backend: Fetch from Gmail/Classroom APIs
-    Backend->>Supabase: Save raw data
-    Backend->>Gemini: Classify & score importance
-    Gemini-->>Backend: Labeled data + importance score
-    Backend->>Supabase: Save filtered data
+    Celery->>Gmail: Fetch emails/events
+    Celery->>Classroom: Fetch assignments/announcements
+    Celery->>Supabase: Save raw data
+    Celery->>Gemini: Classify & score importance
+    Gemini-->>Celery: Labeled data + importance score
+    Celery->>Supabase: Save filtered data
 
     Note over User,Supabase: WhatsApp Ingestion Flow
     WhatsApp->>WhatsApp: Monitor messages (24/7)
@@ -145,15 +164,17 @@ sequenceDiagram
 
 ### Technology Stack Summary
 
-| Component | Technology | Rationale |
-|-----------|-----------|-----------|
-| Backend API | FastAPI (Python) | Async support, automatic API docs, fast development |
-| Frontend | Next.js (React) | SSR for performance, React ecosystem, TypeScript support |
-| Database | Supabase (PostgreSQL) | Managed PostgreSQL, real-time capabilities, built-in auth |
-| LLM | Google Gemini API | Cost-effective, good performance, API simplicity |
-| Task Queue | Celery + Redis | Industry standard, reliable, supports scheduling |
-| WhatsApp Integration | whatsapp-web.js | Unofficial but stable, no business account required |
-| Deployment | Docker + Docker Compose | Containerization, portability, simple orchestration |
+
+| Component            | Technology              | Rationale                                                 |
+| -------------------- | ----------------------- | --------------------------------------------------------- |
+| Backend API          | FastAPI (Python)        | Async support, automatic API docs, fast development       |
+| Frontend             | Next.js (React)         | SSR for performance, React ecosystem, TypeScript support  |
+| Database             | Supabase (PostgreSQL)   | Managed PostgreSQL, real-time capabilities, built-in auth |
+| LLM                  | Google Gemini API       | Cost-effective, good performance, API simplicity          |
+| Task Queue           | Celery + Redis          | Industry standard, reliable, supports scheduling          |
+| WhatsApp Integration | whatsapp-web.js         | Unofficial but stable, no business account required       |
+| Deployment           | Docker + Docker Compose | Containerization, portability, simple orchestration       |
+
 
 ---
 
@@ -171,6 +192,7 @@ sequenceDiagram
 #### Raw Data Tables
 
 **raw_emails**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -186,6 +208,7 @@ created_at: Timestamp
 ```
 
 **raw_events**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -201,6 +224,7 @@ created_at: Timestamp
 ```
 
 **raw_assignments**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -214,7 +238,23 @@ raw_metadata: JSONB
 created_at: Timestamp
 ```
 
+**raw_classroom_announcements**
+
+```sql
+id: UUID (PK)
+user_id: UUID (FK to users)
+classroom_announcement_id: String (unique)
+course_name: String
+title: Text
+text: Text
+announced_by: String
+announced_at: Timestamp
+raw_metadata: JSONB
+created_at: Timestamp
+```
+
 **raw_messages**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -230,6 +270,7 @@ created_at: Timestamp
 #### Ingestion State & Deduplication
 
 **sync_state**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -241,6 +282,7 @@ updated_at: Timestamp
 ```
 
 Notes:
+
 - For WhatsApp, `scope_key` is per chat (private chat or group).
 - WhatsApp raw batches should be unique on `(user_id, chat_name, batch_start_time, batch_end_time)` to prevent duplicate hourly writes.
 - For Gmail/Classroom, external IDs (messageId / courseworkId / announcementId) remain the preferred dedupe keys, with timestamps as a fallback.
@@ -248,6 +290,7 @@ Notes:
 #### Filtered/Processed Data Tables
 
 **emails**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -265,6 +308,7 @@ processed_at: Timestamp
 ```
 
 **events**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -284,6 +328,7 @@ processed_at: Timestamp
 MVP note: Calendar integration can start by extracting meeting invites/events from Gmail content (e.g., invites), and only add direct Google Calendar API integration if it proves straightforward in Phase 1.
 
 **assignments**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -300,6 +345,7 @@ processed_at: Timestamp
 ```
 
 **announcements**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -316,6 +362,7 @@ processed_at: Timestamp
 ```
 
 **whatsapp_summaries**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -335,6 +382,7 @@ processed_at: Timestamp
 #### Conversation & User Tables
 
 **users**
+
 ```sql
 id: UUID (PK)
 username: String (unique)
@@ -344,6 +392,7 @@ updated_at: Timestamp
 ```
 
 **oauth_tokens**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -356,6 +405,7 @@ updated_at: Timestamp
 ```
 
 **conversations**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -365,6 +415,7 @@ updated_at: Timestamp
 ```
 
 **conversation_messages**
+
 ```sql
 id: UUID (PK)
 conversation_id: UUID (FK to conversations)
@@ -374,6 +425,7 @@ created_at: Timestamp
 ```
 
 **user_settings**
+
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
@@ -392,6 +444,20 @@ updated_at: Timestamp
 - Each raw data entry has 0-1 filtered entry (1:0..1)
 - Announcements reference source tables polymorphically via source_type + source_id
 - OAuth tokens are per-user per-provider (user can have multiple providers)
+
+### Foreign Key Cascade Strategy
+
+**Raw → Filtered Table Foreign Keys:**
+- All FK references from filtered tables to raw tables use `ON DELETE SET NULL`
+- **Rationale:** Filtered data is the primary query target and should survive raw data cleanup (14-day retention). When raw data is deleted, filtered data remains with null `raw_*_id` reference, preserving the processed information while losing the audit trail.
+
+**User → Data Foreign Keys:**
+- All FK references to `users` table use `ON DELETE CASCADE`
+- **Rationale:** When a user is deleted, all their data should be removed.
+
+**Conversation → Messages Foreign Keys:**
+- `conversation_messages.conversation_id` uses `ON DELETE CASCADE`
+- **Rationale:** Deleting a conversation should delete all its messages.
 
 ---
 
@@ -433,6 +499,7 @@ graph TD
 #### 1. Next.js Frontend
 
 **Responsibilities:**
+
 - Render chat interface with conversation threads
 - Handle user authentication (username/password)
 - Display conversation history
@@ -441,15 +508,19 @@ graph TD
 - Support conversation thread creation/switching
 
 **Key Interfaces:**
-- `POST /api/auth/login` - User authentication
-- `GET /api/conversations` - List user's conversation threads
-- `POST /api/conversations` - Create new conversation thread
-- `GET /api/conversations/{id}/messages` - Fetch conversation history
-- `POST /api/chat/message` - Send user message, receive AI response
-- `POST /api/ingest/trigger` - Trigger on-demand data ingestion
-- `GET /api/sync/status` - Get last sync time and status
+
+- `POST /auth/login` - User authentication
+- `GET /conversations` - List user's conversation threads
+- `POST /conversations` - Create new conversation thread
+- `GET /conversations/{id}/messages` - Fetch conversation history
+- `POST /conversations/{id}/messages` - Send user message, receive AI response
+- `POST /ingest/trigger` - Trigger on-demand data ingestion
+- `GET /sync/status` - Get last sync time and status
+
+**Note:** Frontend calls backend directly without `/api/` prefix. Next.js does not proxy these requests.
 
 **State Management:**
+
 - Current conversation thread
 - Conversation history
 - User authentication state
@@ -458,6 +529,7 @@ graph TD
 #### 2. FastAPI Backend
 
 **Responsibilities:**
+
 - Handle all API requests from frontend
 - Coordinate data ingestion from all sources
 - Implement conversational agent logic
@@ -471,11 +543,13 @@ graph TD
 **Key API Endpoints:**
 
 *Authentication:*
+
 - `POST /auth/login` - User login
 - `POST /auth/logout` - User logout
 - `GET /auth/me` - Get current user
 
 *Conversations:*
+
 - `GET /conversations` - List conversations
 - `POST /conversations` - Create conversation
 - `GET /conversations/{id}/messages` - Get messages
@@ -483,15 +557,18 @@ graph TD
 - `DELETE /conversations/{id}` - Delete conversation
 
 *Data Ingestion:*
+
 - `POST /ingest/trigger` - Trigger on-demand ingestion (queues Celery tasks)
-- `POST /ingest/whatsapp` - Receive WhatsApp summaries (called by WhatsApp service)
+- `POST /ingest/whatsapp` - Receive WhatsApp summaries (called by WhatsApp service, requires API key auth)
 - `GET /ingest/status` - Get ingestion status
 
 *Data Management:*
+
 - `PATCH /announcements/{id}/seen` - Mark announcement as seen
 - `GET /sync/status` - Get last sync timestamps
 
 **Integration Points:**
+
 - Supabase client for database operations
 - Gemini API client for LLM calls
 - Celery client for task queuing
@@ -500,6 +577,7 @@ graph TD
 #### 3. Celery Worker
 
 **Responsibilities:**
+
 - Execute scheduled ingestion tasks (hourly)
 - Fetch data from Gmail API (emails, calendar events)
 - Fetch data from Google Classroom API (assignments, announcements)
@@ -510,6 +588,7 @@ graph TD
 - Implement retry logic for API failures
 
 **Scheduled Tasks:**
+
 - `ingest_gmail_data()` - Runs hourly, fetches emails (and optionally derives events from invites)
 - `ingest_classroom_data()` - Runs hourly, fetches assignments and announcements
 - `refresh_oauth_tokens()` - Runs daily, refreshes expiring tokens
@@ -517,17 +596,19 @@ graph TD
 - `send_urgent_notifications()` - Runs frequently (or inline during ingestion), sends email notifications for urgent items
 
 **Task Flow:**
+
 1. Fetch data from source API
 2. Save to raw table
 3. For each item:
-   - Extract key information
-   - Call Gemini for classification and importance scoring
-   - Apply rule-based scoring (sender importance, keywords)
-   - Combine AI + rule scores
+  - Extract key information
+  - Call Gemini for classification and importance scoring
+  - Apply rule-based scoring (sender importance, keywords)
+  - Combine AI + rule scores
 4. Save to filtered table
 5. Create announcement entries for high-importance items
 
 **Error Handling:**
+
 - Retry failed API calls (exponential backoff)
 - Log errors to monitoring system
 - Continue processing remaining items on partial failure
@@ -535,6 +616,7 @@ graph TD
 #### 4. WhatsApp Service (VPS)
 
 **Responsibilities:**
+
 - Run whatsapp-web.js 24/7 on VPS
 - Monitor all incoming WhatsApp messages (personal + group)
 - Accumulate messages in memory for 1-hour batches
@@ -544,6 +626,7 @@ graph TD
 - Maintain WhatsApp session persistence
 
 **Implementation:**
+
 - Node.js service (whatsapp-web.js requires Node)
 - In-memory message buffer with hourly flush
 - Gemini API client for summarization
@@ -551,18 +634,20 @@ graph TD
 - Session persistence to avoid re-authentication
 
 **Hourly Summarization Process:**
+
 1. Continuously collect all incoming messages 24/7
 2. Persist the in-progress hourly buffer to local disk on the VPS (SQLite or append-only files)
 3. At the top of each hour, select chats to summarize:
-   - **All private chats** (for the last hour)
-   - **Only configured allowlisted groups** (for the last hour)
+  - **All private chats** (for the last hour)
+  - **Only configured allowlisted groups** (for the last hour)
 4. For each selected chat:
-   - Construct prompt with messages
-   - Call Gemini to extract: summary, key points, deadlines, important announcements
-   - Calculate importance score
+  - Construct prompt with messages
+  - Call Gemini to extract: summary, key points, deadlines, important announcements
+  - Calculate importance score
 5. Send to backend: `POST /ingest/whatsapp` (backend handles raw + filtered writes)
 
 Payload example:
+
 ```json
 {
   "chat_name": "Project Group",
@@ -578,6 +663,7 @@ Payload example:
 ```
 
 **Failure Recovery:**
+
 - If the container restarts mid-hour, resume from persisted hourly buffer
 - If backend POST fails, retry with exponential backoff; keep unsent payloads persisted until acked
 - If Gemini API fails, send raw batch to backend and mark for later re-processing
@@ -586,11 +672,13 @@ Payload example:
 #### 5. Redis Message Broker
 
 **Responsibilities:**
+
 - Queue Celery tasks
 - Store task results
 - Enable task scheduling and periodic tasks
 
 **Configuration:**
+
 - Default Redis configuration
 - Persistence enabled for task durability
 - Separate queues for different task priorities (if needed)
@@ -598,12 +686,14 @@ Payload example:
 #### 6. Supabase (PostgreSQL)
 
 **Responsibilities:**
+
 - Store all application data (raw, filtered, conversations, users)
 - Provide real-time capabilities (future: live sync notifications)
 - Handle authentication (future: when migrating to Clerk)
 - Enforce data integrity via foreign keys and constraints
 
 **Access Patterns:**
+
 - Backend: Full read/write access
 - Celery Worker: Full read/write access
 - Frontend: No direct access (all via Backend API)
@@ -640,61 +730,67 @@ services:
 ```
 
 **WhatsApp Service (Separate VPS):**
+
 - Deployed independently on OCI/Writer Cloud VPS
 - Docker container with Node.js + whatsapp-web.js
-- Environment: BACKEND_API_URL, GEMINI_API_KEY
+- Environment: BACKEND_API_URL, GEMINI_API_KEY, WHATSAPP_API_KEY
 - Volume for WhatsApp session persistence
 
 ### Inter-Component Communication
 
 **Frontend ↔ Backend:**
+
 - Protocol: HTTPS REST API
 - Format: JSON
 - Authentication: JWT tokens (from username/password login)
 
 **Backend ↔ Celery:**
+
 - Protocol: Redis message queue
 - Format: Serialized Python objects
 - Pattern: Task queue with result backend
 
 **WhatsApp Service → Backend:**
+
 - Protocol: HTTPS POST
 - Format: JSON
 - Authentication: API key (shared secret)
 
 **Backend/Celery → Gemini:**
+
 - Protocol: HTTPS REST API
 - Format: JSON
 - Authentication: API key
 
 **Backend/Celery → Gmail/Classroom:**
+
 - Protocol: HTTPS REST API
 - Format: JSON
 - Authentication: OAuth 2.0 (refresh tokens)
 
 **All Components → Supabase:**
+
 - Protocol: PostgreSQL wire protocol
 - Authentication: Connection string with credentials
 
 ### Security Considerations
 
 1. **Secrets Management:**
-   - Database credentials in environment variables
-   - OAuth tokens encrypted at rest in database
-   - API keys (Gemini, WhatsApp service) in environment variables
-   - No secrets in code or Docker images
-
+  - Database credentials in environment variables
+  - OAuth tokens encrypted at rest in database
+  - API keys (Gemini, WhatsApp service) in environment variables
+  - No secrets in code or Docker images
 2. **Authentication:**
-   - Frontend: JWT tokens with expiration
-   - WhatsApp Service → Backend: Shared API key
-   - Gmail/Classroom: OAuth 2.0 refresh tokens
-
+  - Frontend → Backend: JWT tokens with expiration (from username/password login)
+  - WhatsApp Service → Backend: API key authentication (shared secret in headers)
+  - Backend → Gmail/Classroom: OAuth 2.0 refresh tokens
 3. **Network Security:**
-   - All external communication over HTTPS
-   - WhatsApp service authenticates to backend via API key
-   - Database not exposed to public internet (Supabase handles this)
-
+  - All external communication over HTTPS
+  - WhatsApp service authenticates to backend via API key
+  - Database not exposed to public internet (Supabase handles this)
 4. **Data Privacy:**
-   - User data isolated by user_id foreign keys
-   - No cross-user data leakage
-   - OAuth tokens encrypted in database
+  - User data isolated by user_id foreign keys
+  - No cross-user data leakage
+  - OAuth tokens encrypted in database
+
+&nbsp;

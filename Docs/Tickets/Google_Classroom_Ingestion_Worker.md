@@ -9,11 +9,12 @@ Implement Google Classroom ingestion worker for assignments and announcements.
 **In Scope:**
 - Google Classroom API OAuth 2.0 integration
 - Classroom ingestion task (`ingest_classroom_data`):
-  - Fetch assignments and announcements using cursor from sync_state
-  - Save to raw_assignments table
+  - Fetch assignments and announcements using cursor from sync_state (or last 30 days if no cursor exists)
+  - Save assignments to raw_assignments table
+  - Save announcements to raw_classroom_announcements table
   - For each item: call Gemini for classification, importance scoring
   - Apply rule-based scoring
-  - Save to assignments and announcements tables
+  - Save to assignments and announcements tables (filtered)
   - Update sync_state cursor
 - Idempotency (deduplicate using classroom_assignment_id)
 - Error handling and retry logic

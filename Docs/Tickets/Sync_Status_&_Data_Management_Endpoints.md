@@ -14,8 +14,7 @@ Implement endpoints for sync status, on-demand ingestion trigger, and marking an
 - Celery client setup (for queuing tasks)
 
 **Out of Scope:**
-- Actual ingestion logic (Celery workers)
-- WhatsApp ingestion endpoint (separate ticket)
+- Actual ingestion logic (Celery workers - they operate independently)
 
 ## Spec References
 

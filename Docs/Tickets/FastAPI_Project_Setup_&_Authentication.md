@@ -9,13 +9,14 @@ Set up FastAPI project structure with authentication (username/password login, J
 **In Scope:**
 - FastAPI project initialization
 - Project structure (routers, models, services, config)
-- Environment configuration (.env support for DATABASE_URL, JWT_SECRET, GEMINI_API_KEY)
+- Environment configuration (.env support for DATABASE_URL, JWT_SECRET, GEMINI_API_KEY, WHATSAPP_API_KEY)
 - Supabase client setup
 - Authentication endpoints:
   - `POST /auth/login` - username/password login, returns JWT
   - `POST /auth/logout` - logout
   - `GET /auth/me` - get current user
 - JWT token generation and validation middleware
+- API key authentication middleware (for WhatsApp service)
 - Password hashing (bcrypt)
 - Error handling middleware
 - CORS configuration
@@ -34,6 +35,7 @@ Set up FastAPI project structure with authentication (username/password login, J
 
 - [ ] FastAPI app runs and serves docs at `/docs`
 - [ ] Supabase connection works
+- [ ] Initial user seeded (via migration or management command)
 - [ ] User can login with username/password
 - [ ] JWT token is generated and returned
 - [ ] Protected endpoints require valid JWT

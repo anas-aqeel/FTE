@@ -4,12 +4,16 @@
 
 Implement hourly summarization logic using Gemini API and backend communication for WhatsApp service.
 
+**Note:** This ticket requires changes to both the WhatsApp Node.js service AND the FastAPI backend (for the `/ingest/whatsapp` endpoint).
+
 ## Scope
 
 **In Scope:**
 - Hourly summarization process:
-  - At top of each hour, select chats (all private + allowlisted groups)
-  - For each chat, call Gemini to extract: summary, key points, deadlines, importance score
+  - At top of each hour, select chats:
+    - All private chats (always)
+    - Allowlisted groups only (if allowlist is empty/null, no groups are summarized)
+  - For each selected chat, call Gemini to extract: summary, key points, deadlines, importance score
   - Send payload to backend `POST /ingest/whatsapp`
 - Gemini API client
 - Backend API client with authentication
@@ -41,4 +45,4 @@ Implement hourly summarization logic using Gemini API and backend communication 
 ## Dependencies
 
 - Previous ticket (WhatsApp monitoring)
-- Backend sync status endpoint (for `/ingest/whatsapp`)
+- FastAPI Auth ticket (for API key authentication middleware)
