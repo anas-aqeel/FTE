@@ -173,6 +173,61 @@ The Tech Plan now has **14 architectural decisions** (was 12):
 | Schema complete | ✅ | All 15 tables defined with FK strategies |
 | API endpoints aligned | ✅ | Consistent paths across all docs |
 | Data flows documented | ✅ | Sequence diagrams updated |
+| **OAuth setup guide** | ✅ | **Complete step-by-step guide created (2026-02-18)** |
+| **Gemini prompts defined** | ✅ | **All prompt templates documented (2026-02-18)** |
+| **WhatsApp group strategy** | ✅ | **ID-based identification specified (2026-02-18)** |
+
+---
+
+## Additional Documentation Added (2026-02-18)
+
+### 📄 OAuth_Setup_Guide.md
+**Location:** `docs/specs/OAuth_Setup_Guide.md`
+
+Complete guide for setting up OAuth 2.0 authentication for Gmail and Google Classroom APIs:
+- Google Cloud Console configuration (8 detailed steps)
+- OAuth credentials creation and download
+- API enablement (Gmail, Calendar, Classroom)
+- Consent screen configuration with all required scopes
+- One-time OAuth flow script (`scripts/setup_oauth.py`)
+- Token encryption and storage
+- Automatic token refresh mechanism
+- Troubleshooting common issues
+- Security best practices
+
+**Impact:** Eliminates ambiguity in OAuth setup process. Developers can follow step-by-step without guessing.
+
+### 📄 Gemini_Prompt_Templates.md
+**Location:** `docs/specs/Gemini_Prompt_Templates.md`
+
+Comprehensive prompt templates for all Gemini API interactions:
+- **Email Classification:** Summary generation, category assignment, importance scoring, deadline extraction
+- **Event Classification:** Event type detection, importance scoring for calendar events
+- **Assignment Classification:** Assignment type categorization, effort estimation, urgency scoring
+- **Classroom Announcement Classification:** Announcement importance and category detection
+- **WhatsApp Summarization:** Message batch summarization, key point extraction, deadline detection
+- **Conversational Agent:** System prompt, query construction, data formatting functions
+- Error handling templates
+- Token usage estimates and cost optimization strategies
+- Testing examples
+
+**Impact:** Ensures consistent AI behavior across the system. Developers can copy-paste working prompts instead of trial-and-error.
+
+### 📄 WhatsApp_Group_Identification_Strategy.md
+**Location:** `docs/specs/WhatsApp_Group_Identification_Strategy.md`
+
+Technical decision and implementation guide for WhatsApp group identification:
+- **Decision:** Use stable group ID (`chat.id._serialized`) instead of mutable group name
+- **Rationale:** Groups can be renamed, breaking name-based allowlists
+- Database schema for storing both ID and name
+- WhatsApp service implementation (message handling, group detection)
+- Backend API endpoints (allowlist management, group update handling)
+- Frontend UI component for group selection
+- Group name change tracking and automatic sync
+- Migration guide from name-based to ID-based approach
+- Testing strategy with 3 test cases
+
+**Impact:** Prevents allowlist breakage when groups are renamed. Provides robust, future-proof implementation.
 
 ---
 
@@ -184,6 +239,7 @@ All blocking and recommended issues have been addressed. The specs and tickets a
 
 ### What Changed:
 
+**Original Updates (2026-02-17):**
 1. **Tech Plan** - Added 2 new architectural decisions (#13, #14), FK cascade strategy, empty allowlist behavior
 2. **Tickets** - Updated 6 tickets with clarifications and fixes
 3. **Schema** - Added `raw_classroom_announcements` table
@@ -193,13 +249,26 @@ All blocking and recommended issues have been addressed. The specs and tickets a
 7. **Backfill Limit** - Added 30-day initial sync limit
 8. **Cross-Service Note** - Added to WhatsApp Summarization ticket
 
-### Remaining Minor Items (Can Fix During Execution):
+**New Additions (2026-02-18):**
+9. **OAuth Setup Guide** - Complete OAuth 2.0 setup documentation with scripts
+10. **Gemini Prompt Templates** - All AI prompt templates with examples and best practices
+11. **WhatsApp Group Strategy** - ID-based group identification with full implementation guide
 
+### All Minor Items RESOLVED ✅
+
+**Previously Pending:**
+- ~~OAuth setup process details~~ → **ADDED: OAuth_Setup_Guide.md**
+- ~~Gemini prompt engineering~~ → **ADDED: Gemini_Prompt_Templates.md**
+- ~~WhatsApp group ID vs name strategy~~ → **ADDED: WhatsApp_Group_Identification_Strategy.md**
+
+**Truly Minor (No blockers):**
 - Explicit dedup test for classroom announcements (can add during test writing)
-- OAuth concurrent refresh handling (unlikely in single-user MVP)
+- OAuth concurrent refresh handling (unlikely in single-user MVP, can monitor during testing)
 
 ---
 
-**Recommendation:** Proceed with execution. The architecture is sound and all critical gaps are closed.
+**Recommendation:** ✅ **PROCEED WITH FULL CONFIDENCE**
 
-**Last Updated:** 2026-02-17
+All critical gaps are closed. The documentation is now comprehensive and production-ready.
+
+**Last Updated:** 2026-02-18
