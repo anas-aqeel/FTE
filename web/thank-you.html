@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>You're on the list! - AcademiQ</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#121212",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#050505",
+                        "accent-purple": "#8b5cf6",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    animation: {
+                        'fadeInUp': 'fadeInUp 0.6s ease-out',
+                        'scaleIn': 'scaleIn 0.4s ease-out',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+        }
+
+        .glass-nav {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .confetti {
+            animation: confetti-fall 3s ease-out infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden selection:bg-accent-purple selection:text-white">
+    <!-- Background Grid -->
+    <div class="fixed inset-0 z-0 pointer-events-none"
+        style="background-size: 50px 50px; background-image: linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px); mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
+    </div>
+
+    <!-- Floating Navbar -->
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+        <nav class="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-8 max-w-4xl w-full">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="size-6 text-white flex items-center justify-center bg-white/10 rounded-full">
+                    <span class="material-symbols-outlined text-[18px]">school</span>
+                </div>
+                <h2 class="text-white text-base font-bold tracking-tight">AcademiQ</h2>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="index.html"
+                    class="text-sm font-medium text-[#a1a1aa] hover:text-white transition-colors">
+                    Back to Home
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow flex items-center justify-center pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+            <!-- Success Icon -->
+            <div class="mb-8 animate-scaleIn">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-accent-purple to-accent-blue mb-4">
+                    <span class="material-symbols-outlined text-white text-[48px]">check_circle</span>
+                </div>
+            </div>
+
+            <!-- Main Message -->
+            <div class="animate-fadeInUp">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">You're on the list! 🎉</h1>
+                <p class="text-xl text-[#a1a1aa] mb-8 max-w-xl mx-auto leading-relaxed">
+                    We've sent a confirmation email. Check your inbox to stay updated on AcademiQ's launch!
+                </p>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="grid md:grid-cols-3 gap-4 mb-12 animate-fadeInUp" style="animation-delay: 0.2s;">
+                <div class="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                    <div class="text-accent-purple mb-2">
+                        <span class="material-symbols-outlined text-[32px]">schedule</span>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1">Expected Launch</h3>
+                    <p class="text-sm text-[#a1a1aa]">Early 2026</p>
+                </div>
+                <div class="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                    <div class="text-accent-blue mb-2">
+                        <span class="material-symbols-outlined text-[32px]">verified</span>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1">Beta Access</h3>
+                    <p class="text-sm text-[#a1a1aa]">Limited spots available</p>
+                </div>
+                <div class="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                    <div class="text-emerald-400 mb-2">
+                        <span class="material-symbols-outlined text-[32px]">notifications_active</span>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1">Stay Updated</h3>
+                    <p class="text-sm text-[#a1a1aa]">We'll email you updates</p>
+                </div>
+            </div>
+
+            <!-- What's Next -->
+            <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent mb-12 text-left animate-fadeInUp" style="animation-delay: 0.4s;">
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-accent-purple">rocket_launch</span>
+                    What happens next?
+                </h2>
+                <ul class="space-y-3 text-[#a1a1aa]">
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-accent-purple text-[20px] mt-0.5">mail</span>
+                        <span>We'll send you <strong class="text-white">development updates</strong> as we build AcademiQ</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-accent-blue text-[20px] mt-0.5">early_on</span>
+                        <span>You'll get <strong class="text-white">early access</strong> to the beta before public launch</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-emerald-400 text-[20px] mt-0.5">star</span>
+                        <span>Help shape AcademiQ by <strong class="text-white">sharing your feedback</strong></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-purple-400 text-[20px] mt-0.5">celebration</span>
+                        <span>Be among the first students to <strong class="text-white">never miss a deadline again!</strong></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Social Share -->
+            <div class="mb-12 animate-fadeInUp" style="animation-delay: 0.6s;">
+                <h3 class="text-lg font-semibold text-white mb-4">Know other students who'd love AcademiQ?</h3>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20waitlist%20for%20AcademiQ%20-%20an%20AI%20assistant%20that%20aggregates%20Gmail%2C%20Google%20Classroom%2C%20and%20WhatsApp%20to%20help%20students%20never%20miss%20a%20deadline!%20%F0%9F%8E%93&url=https://academiq.com"
+                        target="_blank"
+                        class="flex items-center justify-center gap-2 px-6 py-3 bg-[#1DA1F2]/20 hover:bg-[#1DA1F2]/30 text-white rounded-lg border border-[#1DA1F2]/30 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">public</span>
+                        Share on Twitter
+                    </a>
+                    <button onclick="copyLink()"
+                        class="flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">link</span>
+                        Copy Link
+                    </button>
+                </div>
+                <p id="copy-message" class="text-sm text-green-400 mt-2 opacity-0 transition-opacity">Link copied!</p>
+            </div>
+
+            <!-- CTA -->
+            <div class="animate-fadeInUp" style="animation-delay: 0.8s;">
+                <a href="index.html"
+                    class="inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">home</span>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-4 border-t border-white/5 bg-[#050505]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2 text-white/40">
+                <span class="material-symbols-outlined">school</span>
+                <span class="font-semibold text-white/80">AcademiQ</span>
+            </div>
+            <div class="flex gap-8 text-sm text-[#a1a1aa]">
+                <a class="hover:text-white transition-colors" href="privacy.html">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="terms.html">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="index.html#waitlist">Contact Support</a>
+            </div>
+            <div class="flex gap-4">
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">public</span>
+                </a>
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-xs text-[#52525b]">
+            © 2026 AcademiQ. Built with ❤️ for students.
+        </div>
+    </footer>
+
+    <script>
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.origin);
+            const message = document.getElementById('copy-message');
+            message.style.opacity = '1';
+            setTimeout(() => {
+                message.style.opacity = '0';
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

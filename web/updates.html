@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Development Updates - AcademiQ</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#121212",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#050505",
+                        "accent-purple": "#8b5cf6",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+        }
+
+        .glass-nav {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden selection:bg-accent-purple selection:text-white">
+    <!-- Background Grid -->
+    <div class="fixed inset-0 z-0 pointer-events-none"
+        style="background-size: 50px 50px; background-image: linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px); mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
+    </div>
+
+    <!-- Floating Navbar -->
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+        <nav class="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-8 max-w-4xl w-full">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="size-6 text-white flex items-center justify-center bg-white/10 rounded-full">
+                    <span class="material-symbols-outlined text-[18px]">school</span>
+                </div>
+                <h2 class="text-white text-base font-bold tracking-tight">AcademiQ</h2>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="index.html#waitlist"
+                    class="bg-white text-black hover:bg-gray-200 transition-colors px-5 py-2 rounded-full text-sm font-semibold">
+                    Join Waitlist
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
+        <!-- Header -->
+        <div class="mb-12 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4">Development Updates</h1>
+            <p class="text-xl text-[#a1a1aa] max-w-2xl mx-auto">
+                Follow our journey as we build AcademiQ. Subscribe to the waitlist for email updates.
+            </p>
+        </div>
+
+        <!-- Updates Timeline -->
+        <div class="space-y-12">
+            <!-- Update 1 - Most Recent -->
+            <article class="relative pl-8 border-l-2 border-accent-purple">
+                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-accent-purple"></div>
+                <div class="mb-2 flex items-center gap-3">
+                    <span class="text-sm font-medium text-accent-purple">Feb 18, 2026</span>
+                    <span class="px-2 py-0.5 text-xs font-semibold bg-accent-purple/20 text-accent-purple rounded-full">Latest</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">🎉 Waitlist is Now Open!</h2>
+                <div class="space-y-3 text-[#a1a1aa] leading-relaxed mb-4">
+                    <p>
+                        We're excited to officially open the AcademiQ waitlist! After months of planning and development, we're ready to start building this with you.
+                    </p>
+                    <p><strong class="text-white">What's happening now:</strong></p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Backend architecture design completed</li>
+                        <li>Database schema finalized (Supabase + PostgreSQL)</li>
+                        <li>Landing page live with full project details</li>
+                        <li>Privacy policy and terms drafted</li>
+                    </ul>
+                    <p><strong class="text-white">Next steps:</strong></p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Begin FastAPI backend development</li>
+                        <li>Implement Gmail and Google Classroom ingestion</li>
+                        <li>Build WhatsApp monitoring service</li>
+                    </ul>
+                </div>
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Planning</span>
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Infrastructure</span>
+                </div>
+            </article>
+
+            <!-- Update 2 - Example Future Update -->
+            <article class="relative pl-8 border-l-2 border-white/20">
+                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-white/20"></div>
+                <div class="mb-2">
+                    <span class="text-sm font-medium text-[#a1a1aa]">Coming Soon</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Backend Development Begins</h2>
+                <div class="space-y-3 text-[#a1a1aa] leading-relaxed mb-4">
+                    <p>
+                        We'll start building the core backend infrastructure using FastAPI, implementing OAuth flows, and setting up Celery workers for scheduled data ingestion.
+                    </p>
+                    <p><em>Stay tuned for updates on progress...</em></p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Backend</span>
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">OAuth</span>
+                </div>
+            </article>
+
+            <!-- Update 3 - Example Future Update -->
+            <article class="relative pl-8 border-l-2 border-white/20">
+                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-white/20"></div>
+                <div class="mb-2">
+                    <span class="text-sm font-medium text-[#a1a1aa]">Coming Soon</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">AI Integration Complete</h2>
+                <div class="space-y-3 text-[#a1a1aa] leading-relaxed mb-4">
+                    <p>
+                        Google Gemini integration for classifying emails, extracting deadlines, and scoring importance will be implemented and tested.
+                    </p>
+                    <p><em>We'll share performance metrics and examples...</em></p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">AI</span>
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Gemini</span>
+                </div>
+            </article>
+
+            <!-- Update 4 - Example Future Update -->
+            <article class="relative pl-8 border-l-2 border-white/20">
+                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-white/20"></div>
+                <div class="mb-2">
+                    <span class="text-sm font-medium text-[#a1a1aa]">Coming Soon</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Beta Launch!</h2>
+                <div class="space-y-3 text-[#a1a1aa] leading-relaxed mb-4">
+                    <p>
+                        The moment we've all been waiting for - inviting the first batch of waitlist members to beta test AcademiQ.
+                    </p>
+                    <p><em>This is where you come in...</em></p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Launch</span>
+                    <span class="px-3 py-1 text-xs bg-white/10 rounded-full text-white/60">Beta</span>
+                </div>
+            </article>
+        </div>
+
+        <!-- Newsletter Signup CTA -->
+        <div class="mt-16 p-8 border border-accent-purple/20 rounded-2xl bg-gradient-to-br from-accent-purple/10 to-transparent text-center">
+            <div class="max-w-xl mx-auto">
+                <h3 class="text-2xl font-bold text-white mb-4">Want updates delivered to your inbox?</h3>
+                <p class="text-[#a1a1aa] mb-6">
+                    Join the waitlist to receive development updates, launch announcements, and early beta access.
+                </p>
+                <a href="index.html#waitlist"
+                    class="inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                    Join Waitlist
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- FAQ About Updates -->
+        <div class="mt-16 space-y-6">
+            <h3 class="text-2xl font-bold text-white text-center mb-8">Frequently Asked Questions</h3>
+
+            <div class="p-6 border border-white/10 rounded-xl bg-white/5">
+                <h4 class="text-lg font-semibold text-white mb-2">How often will you post updates?</h4>
+                <p class="text-[#a1a1aa]">
+                    We'll post major development milestones here and send email updates to the waitlist every 2-4 weeks. We won't spam you!
+                </p>
+            </div>
+
+            <div class="p-6 border border-white/10 rounded-xl bg-white/5">
+                <h4 class="text-lg font-semibold text-white mb-2">Can I provide feedback during development?</h4>
+                <p class="text-[#a1a1aa]">
+                    Absolutely! We'll share beta access links and feedback forms as we build features. Your input shapes AcademiQ.
+                </p>
+            </div>
+
+            <div class="p-6 border border-white/10 rounded-xl bg-white/5">
+                <h4 class="text-lg font-semibold text-white mb-2">When can I start using AcademiQ?</h4>
+                <p class="text-[#a1a1aa]">
+                    We're targeting early 2026 for beta launch. Waitlist members will be the first to know when beta invites go out.
+                </p>
+            </div>
+
+            <div class="p-6 border border-white/10 rounded-xl bg-white/5">
+                <h4 class="text-lg font-semibold text-white mb-2">Will AcademiQ be free?</h4>
+                <p class="text-[#a1a1aa]">
+                    Beta access is completely free. We may introduce paid plans later, but early beta users will likely get special pricing or lifetime deals.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-4 border-t border-white/5 bg-[#050505]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2 text-white/40">
+                <span class="material-symbols-outlined">school</span>
+                <span class="font-semibold text-white/80">AcademiQ</span>
+            </div>
+            <div class="flex gap-8 text-sm text-[#a1a1aa]">
+                <a class="hover:text-white transition-colors" href="privacy.html">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="terms.html">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="index.html#waitlist">Contact Support</a>
+            </div>
+            <div class="flex gap-4">
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">public</span>
+                </a>
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-xs text-[#52525b]">
+            © 2026 AcademiQ. Built with ❤️ for students.
+        </div>
+    </footer>
+</body>
+
+</html>

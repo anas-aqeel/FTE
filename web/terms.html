@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Terms of Service - AcademiQ</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#121212",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#050505",
+                        "accent-purple": "#8b5cf6",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+        }
+
+        .glass-nav {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden selection:bg-accent-purple selection:text-white">
+    <!-- Background Grid -->
+    <div class="fixed inset-0 z-0 pointer-events-none"
+        style="background-size: 50px 50px; background-image: linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px); mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
+    </div>
+
+    <!-- Floating Navbar -->
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+        <nav class="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-8 max-w-4xl w-full">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="size-6 text-white flex items-center justify-center bg-white/10 rounded-full">
+                    <span class="material-symbols-outlined text-[18px]">school</span>
+                </div>
+                <h2 class="text-white text-base font-bold tracking-tight">AcademiQ</h2>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="index.html#waitlist"
+                    class="bg-white text-black hover:bg-gray-200 transition-colors px-5 py-2 rounded-full text-sm font-semibold">
+                    Join Waitlist
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
+        <div class="mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Terms of Service</h1>
+            <p class="text-[#a1a1aa]">Last updated: February 18, 2026</p>
+        </div>
+
+        <div class="space-y-8 text-[#a1a1aa] leading-relaxed">
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">1. Acceptance of Terms</h2>
+                <p>By joining the AcademiQ waitlist or using our service, you agree to these Terms of Service. If you don't agree, please don't use AcademiQ.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">2. Waitlist Terms</h2>
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-4">Joining the Waitlist</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Waitlist signup is free and does not guarantee immediate access to AcademiQ</li>
+                    <li>We'll contact you via email when beta access becomes available</li>
+                    <li>Your position on the waitlist does not guarantee priority access</li>
+                    <li>You can unsubscribe from the waitlist at any time</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-6">Waitlist Communications</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>We may send you product updates, launch announcements, and development progress</li>
+                    <li>You can opt-out of non-essential emails while remaining on the waitlist</li>
+                    <li>We will never spam you or sell your email to third parties</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">3. Beta Access Terms</h2>
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-4">Limited Beta Access</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Beta access is provided "as is" without warranties</li>
+                    <li>Features may change, break, or be removed during beta testing</li>
+                    <li>We may limit the number of beta users at our discretion</li>
+                    <li>Beta access may be revoked if terms are violated</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-6">Beta User Responsibilities</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li><strong class="text-white">Feedback:</strong> We encourage you to provide feedback and report bugs</li>
+                    <li><strong class="text-white">Confidentiality:</strong> Please don't share beta features publicly before official launch</li>
+                    <li><strong class="text-white">Data Backup:</strong> Keep backups of important academic data; beta may have bugs</li>
+                    <li><strong class="text-white">Fair Use:</strong> Don't abuse or exploit the service</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">4. Service Description</h2>
+                <p class="mb-4">AcademiQ is an AI-powered personal assistant that:</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Aggregates data from Gmail, Google Classroom, and WhatsApp (with your permission)</li>
+                    <li>Uses AI to extract deadlines, assignments, and important information</li>
+                    <li>Provides a conversational interface to query your academic commitments</li>
+                </ul>
+                <p class="mt-4"><strong class="text-white">Important:</strong> AcademiQ is a productivity tool, not a replacement for your own organization. You are responsible for meeting your deadlines.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">5. User Accounts & Access</h2>
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-4">Account Creation</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>You must provide accurate information when signing up</li>
+                    <li>You must be 18+ years old or have parental consent</li>
+                    <li>One account per person; no sharing accounts</li>
+                    <li>You're responsible for keeping your account secure</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-6">OAuth Permissions</h3>
+                <p class="mb-2">When you connect Gmail, Google Classroom, or WhatsApp:</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>We request only the minimum permissions needed</li>
+                    <li>You can revoke access at any time through your Google/WhatsApp settings</li>
+                    <li>Revoking access will stop AcademiQ from syncing new data</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">6. Acceptable Use Policy</h2>
+                <p class="mb-4">You agree NOT to:</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Use AcademiQ for any illegal or unauthorized purpose</li>
+                    <li>Attempt to hack, reverse-engineer, or compromise the service</li>
+                    <li>Overload our systems with excessive API calls or automated requests</li>
+                    <li>Share, sell, or redistribute your access to others</li>
+                    <li>Use AcademiQ to harass, spam, or harm others</li>
+                    <li>Violate any laws or third-party rights (including privacy laws)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">7. Pricing & Payment (Future)</h2>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Beta access is currently <strong class="text-white">free</strong></li>
+                    <li>We may introduce paid plans in the future</li>
+                    <li>Early beta users may receive special pricing or lifetime deals (no guarantees)</li>
+                    <li>We'll notify you before charging anything</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">8. Data Ownership & Privacy</h2>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li><strong class="text-white">Your Data is Yours:</strong> You own all academic data synced to AcademiQ</li>
+                    <li><strong class="text-white">We Process, Not Sell:</strong> We never sell your data to advertisers or third parties</li>
+                    <li><strong class="text-white">AI Processing:</strong> We use Google Gemini API to analyze your data (see Privacy Policy)</li>
+                    <li><strong class="text-white">Data Deletion:</strong> You can delete your account and all data anytime</li>
+                </ul>
+                <p class="mt-4">See our <a href="privacy.html" class="text-accent-purple hover:underline">Privacy Policy</a> for full details.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">9. Cancellation & Termination</h2>
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-4">By You</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>You can delete your account at any time</li>
+                    <li>Your data will be permanently deleted within 30 days</li>
+                    <li>No refunds for partial months (when paid plans launch)</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-6">By Us</h3>
+                <p class="mb-2">We may suspend or terminate your account if:</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>You violate these Terms of Service</li>
+                    <li>Your account is inactive for 12+ months</li>
+                    <li>Required by law or to prevent harm</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">10. Disclaimers & Limitations</h2>
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-4">"As Is" Service</h3>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>AcademiQ is provided without warranties of any kind</li>
+                    <li>We don't guarantee 100% uptime or accuracy</li>
+                    <li>AI may make mistakes; always verify important deadlines</li>
+                    <li>Service may be interrupted for maintenance or updates</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white/80 mb-2 mt-6">Limitation of Liability</h3>
+                <p>AcademiQ is not liable for:</p>
+                <ul class="list-disc ml-6 space-y-2 mt-2">
+                    <li>Missed deadlines due to technical issues or AI errors</li>
+                    <li>Lost data (keep your own backups)</li>
+                    <li>Consequences of incorrect information</li>
+                    <li>Damages exceeding the amount you paid (currently $0)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">11. Changes to Terms</h2>
+                <p>We may update these terms as AcademiQ evolves. We'll notify users of major changes via email. Continued use after changes means you accept the new terms.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">12. Governing Law</h2>
+                <p>These terms are governed by the laws of [Your Jurisdiction]. Any disputes will be resolved in [Your Jurisdiction] courts.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">13. Contact & Support</h2>
+                <p>Questions about these terms?</p>
+                <ul class="list-none mt-4 space-y-2">
+                    <li><strong class="text-white">Email:</strong> <a href="mailto:legal@academiq.com" class="text-accent-purple hover:underline">legal@academiq.com</a></li>
+                    <li><strong class="text-white">Support:</strong> <a href="mailto:support@academiq.com" class="text-accent-purple hover:underline">support@academiq.com</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="mt-12 p-6 border border-white/10 rounded-xl bg-white/5">
+            <p class="text-sm text-[#a1a1aa] text-center">
+                <strong class="text-white">TL;DR:</strong> Be cool, don't abuse the service, we're not liable if the AI makes a mistake, you own your data, and you can leave anytime. We're here to help students succeed! 🎓
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-4 border-t border-white/5 bg-[#050505]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2 text-white/40">
+                <span class="material-symbols-outlined">school</span>
+                <span class="font-semibold text-white/80">AcademiQ</span>
+            </div>
+            <div class="flex gap-8 text-sm text-[#a1a1aa]">
+                <a class="hover:text-white transition-colors" href="privacy.html">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="terms.html">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="index.html#waitlist">Contact Support</a>
+            </div>
+            <div class="flex gap-4">
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">public</span>
+                </a>
+                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-xs text-[#52525b]">
+            © 2026 AcademiQ. Built with ❤️ for students.
+        </div>
+    </footer>
+</body>
+
+</html>
