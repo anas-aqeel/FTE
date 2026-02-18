@@ -1,273 +1,271 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en">
-
+<html lang="en" class="dark" style="color-scheme: dark;">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>About - AcademiQ</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#121212",
-                        "background-light": "#f7f7f7",
-                        "background-dark": "#050505",
-                        "accent-purple": "#8b5cf6",
-                        "accent-blue": "#3b82f6",
-                    },
-                    fontFamily: {
-                        display: ["Inter", "sans-serif"],
-                        body: ["Inter", "sans-serif"],
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050505;
-        }
-
-        .glass-nav {
-            background: rgba(18, 18, 18, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About - AcademiQ</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { brand: '#8b5cf6' },
+          fontFamily: { primary: ['Inter', 'system-ui', 'sans-serif'] },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .bg-divide { background-color: rgba(255,255,255,0.08); }
+    .border-divide { border-color: rgba(255,255,255,0.08); }
+    .shadow-aceternity { box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 1px 2px rgba(0,0,0,0.3); }
+    .gradient-text {
+      background: linear-gradient(90deg, #8b5cf6, #c4b5fd, #8b5cf6);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
 </head>
+<body class="h-full bg-black antialiased text-white">
 
-<body class="bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden selection:bg-accent-purple selection:text-white">
-    <!-- Background Grid -->
-    <div class="fixed inset-0 z-0 pointer-events-none"
-        style="background-size: 50px 50px; background-image: linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px); mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
-    </div>
-
-    <!-- Floating Navbar -->
-    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-        <nav class="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-8 max-w-4xl w-full">
-            <a href="index.html" class="flex items-center gap-3">
-                <div class="size-6 text-white flex items-center justify-center bg-white/10 rounded-full">
-                    <span class="material-symbols-outlined text-[18px]">school</span>
-                </div>
-                <h2 class="text-white text-base font-bold tracking-tight">AcademiQ</h2>
-            </a>
-            <div class="flex items-center gap-3">
-                <a href="index.html#waitlist"
-                    class="bg-white text-black hover:bg-gray-200 transition-colors px-5 py-2 rounded-full text-sm font-semibold">
-                    Join Waitlist
-                </a>
-            </div>
-        </nav>
-    </div>
-
-    <!-- Main Content -->
-    <main class="relative z-10 flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
-        <!-- Header -->
-        <div class="mb-16 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4">About AcademiQ</h1>
-            <p class="text-xl text-[#a1a1aa] max-w-2xl mx-auto">
-                Built by students, for students who are tired of missing deadlines.
-            </p>
+  <!-- Navigation -->
+  <nav class="max-w-7xl mx-auto">
+    <div class="hidden items-center justify-between px-4 py-4 md:flex">
+      <a class="flex items-center gap-2.5" href="index.html">
+        <div class="size-7 text-white flex items-center justify-center bg-brand/20 rounded-lg border border-brand/30">
+          <span class="material-symbols-outlined text-[18px] text-brand">school</span>
         </div>
+        <span class="text-2xl font-medium">AcademiQ</span>
+      </a>
+      <div class="flex items-center gap-10">
+        <a class="font-medium text-gray-300 transition duration-200 hover:text-neutral-100" href="index.html#features">Features</a>
+        <a class="font-medium text-gray-300 transition duration-200 hover:text-neutral-100" href="index.html#how-it-works">How it Works</a>
+        <a class="font-medium text-gray-300 transition duration-200 hover:text-neutral-100" href="index.html#waitlist">Waitlist</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a class="block rounded-xl px-6 py-2 text-center text-sm font-medium transition duration-150 active:scale-[0.98] sm:text-base bg-white text-black" href="index.html#waitlist">Join Waitlist</a>
+      </div>
+    </div>
+    <div class="relative flex items-center justify-between p-3 md:hidden">
+      <a class="flex items-center gap-2" href="index.html">
+        <div class="size-7 text-white flex items-center justify-center bg-brand/20 rounded-lg border border-brand/30">
+          <span class="material-symbols-outlined text-[18px] text-brand">school</span>
+        </div>
+        <span class="text-2xl font-medium">AcademiQ</span>
+      </a>
+      <a class="block rounded-xl px-5 py-2 text-center text-sm font-medium bg-white text-black" href="index.html#waitlist">Join Waitlist</a>
+    </div>
+  </nav>
 
-        <!-- The Story -->
-        <section class="mb-16">
-            <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent">
-                <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-accent-purple">auto_stories</span>
-                    The Story
-                </h2>
-                <div class="space-y-4 text-[#a1a1aa] leading-relaxed">
-                    <p>
-                        Picture this: It's 11:58 PM. You're about to submit your assignment when you realize... you were supposed to submit it at <strong class="text-white">11:00 PM</strong>, not midnight.
-                    </p>
-                    <p>
-                        The deadline was buried in a WhatsApp group chat with <strong class="text-white">500+ unread messages</strong>. Your professor's email is lost in an inbox with <strong class="text-white">1,247 unread emails</strong>. Google Classroom shows it, but you haven't checked in a week.
-                    </p>
-                    <p>
-                        Sound familiar? We've all been there. <strong class="text-white">This is the problem AcademiQ solves.</strong>
-                    </p>
-                </div>
-            </div>
-        </section>
+  <main>
+    <div class="bg-divide h-[1px] w-full"></div>
+
+    <!-- Hero -->
+    <div class="max-w-7xl mx-auto border-divide border-x">
+      <div class="flex flex-col items-center pt-16 pb-12 px-6 text-center">
+        <p class="gradient-text text-sm font-normal">Our Story</p>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mt-4">About AcademiQ</h1>
+        <p class="text-lg text-gray-400 max-w-xl mx-auto mt-6 leading-relaxed">
+          Built by students, for students who are tired of missing deadlines.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-divide h-[1px] w-full"></div>
+
+    <!-- The Story -->
+    <div class="max-w-7xl mx-auto border-divide border-x">
+      <div class="max-w-3xl mx-auto px-6 py-16">
+        <div class="p-6 border border-white/10 rounded-lg bg-white/[0.03] shadow-aceternity mb-12">
+          <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-brand text-[20px]">auto_stories</span>
+            The Story
+          </h2>
+          <div class="space-y-4 text-gray-400 leading-relaxed text-sm">
+            <p>
+              Picture this: It's 11:58 PM. You're about to submit your assignment when you realize... you were supposed to submit it at <strong class="text-white">11:00 PM</strong>, not midnight.
+            </p>
+            <p>
+              The deadline was buried in a WhatsApp group chat with <strong class="text-white">500+ unread messages</strong>. Your professor's email is lost in an inbox with <strong class="text-white">1,247 unread emails</strong>. Google Classroom shows it, but you haven't checked in a week.
+            </p>
+            <p>
+              Sound familiar? We've all been there. <strong class="text-white">This is the problem AcademiQ solves.</strong>
+            </p>
+          </div>
+        </div>
 
         <!-- The Problem -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">The Problem We're Solving</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="p-6 border border-red-500/20 rounded-xl bg-red-500/5">
-                    <div class="text-red-400 mb-4">
-                        <span class="material-symbols-outlined text-[48px]">inbox</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Information Overload</h3>
-                    <p class="text-sm text-[#a1a1aa]">
-                        Critical information scattered across Gmail, WhatsApp, Google Classroom, and Discord.
-                    </p>
-                </div>
-                <div class="p-6 border border-yellow-500/20 rounded-xl bg-yellow-500/5">
-                    <div class="text-yellow-400 mb-4">
-                        <span class="material-symbols-outlined text-[48px]">schedule</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Time Wasted</h3>
-                    <p class="text-sm text-[#a1a1aa]">
-                        Hours spent searching through messages and emails trying to find specific deadlines.
-                    </p>
-                </div>
-                <div class="p-6 border border-purple-500/20 rounded-xl bg-purple-500/5">
-                    <div class="text-purple-400 mb-4">
-                        <span class="material-symbols-outlined text-[48px]">psychology_alt</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Mental Overload</h3>
-                    <p class="text-sm text-[#a1a1aa]">
-                        The stress of manually tracking everything across multiple platforms.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <h2 class="text-2xl font-semibold text-white mb-6 text-center">The Problem We're Solving</h2>
+        <div class="grid md:grid-cols-3 gap-4 mb-16">
+          <div class="p-5 border border-red-500/20 rounded-lg bg-red-500/[0.04] shadow-aceternity">
+            <span class="material-symbols-outlined text-red-400 text-[28px] mb-3 block">inbox</span>
+            <h3 class="font-medium text-white mb-1.5">Information Overload</h3>
+            <p class="text-sm text-gray-400">Critical information scattered across Gmail, WhatsApp, Google Classroom, and Discord.</p>
+          </div>
+          <div class="p-5 border border-yellow-500/20 rounded-lg bg-yellow-500/[0.04] shadow-aceternity">
+            <span class="material-symbols-outlined text-yellow-400 text-[28px] mb-3 block">schedule</span>
+            <h3 class="font-medium text-white mb-1.5">Time Wasted</h3>
+            <p class="text-sm text-gray-400">Hours spent searching through messages and emails trying to find specific deadlines.</p>
+          </div>
+          <div class="p-5 border border-brand/20 rounded-lg bg-brand/[0.04] shadow-aceternity">
+            <span class="material-symbols-outlined text-brand text-[28px] mb-3 block">psychology_alt</span>
+            <h3 class="font-medium text-white mb-1.5">Mental Overload</h3>
+            <p class="text-sm text-gray-400">The stress of manually tracking everything across multiple platforms.</p>
+          </div>
+        </div>
 
         <!-- The Solution -->
-        <section class="mb-16">
-            <div class="p-8 border border-accent-purple/20 rounded-2xl bg-gradient-to-br from-accent-purple/10 to-transparent">
-                <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-accent-purple">lightbulb</span>
-                    Our Solution
-                </h2>
-                <div class="space-y-4 text-[#a1a1aa] leading-relaxed">
-                    <p>
-                        <strong class="text-white">AcademiQ is your AI-powered personal assistant</strong> that automatically aggregates all your academic information into one place.
-                    </p>
-                    <p>
-                        Instead of switching between 5 different apps, just ask: <em class="text-white">"What's due this week?"</em> or <em class="text-white">"Summarize today's group chat."</em>
-                    </p>
-                    <p>
-                        Powered by <strong class="text-white">Google Gemini AI</strong>, AcademiQ understands context, extracts deadlines, scores importance, and surfaces only what matters.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <div class="p-6 border border-brand/20 rounded-lg bg-brand/[0.04] shadow-aceternity mb-16">
+          <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-brand text-[20px]">lightbulb</span>
+            Our Solution
+          </h2>
+          <div class="space-y-4 text-gray-400 leading-relaxed text-sm">
+            <p>
+              <strong class="text-white">AcademiQ is your AI-powered personal assistant</strong> that automatically aggregates all your academic information into one place.
+            </p>
+            <p>
+              Instead of switching between 5 different apps, just ask: <em class="text-white">"What's due this week?"</em> or <em class="text-white">"Summarize today's group chat."</em>
+            </p>
+            <p>
+              Powered by <strong class="text-white">Google Gemini AI</strong>, AcademiQ understands context, extracts deadlines, scores importance, and surfaces only what matters.
+            </p>
+          </div>
+        </div>
 
         <!-- Mission -->
-        <section class="mb-16 text-center">
-            <div class="max-w-2xl mx-auto">
-                <h2 class="text-3xl font-bold text-white mb-4">Our Mission</h2>
-                <p class="text-xl text-[#a1a1aa] leading-relaxed">
-                    To help every student <strong class="text-white">never miss a deadline again</strong>, so they can focus on learning instead of stressing about organization.
-                </p>
-            </div>
-        </section>
+        <div class="text-center mb-16">
+          <h2 class="text-2xl font-semibold text-white mb-4">Our Mission</h2>
+          <p class="text-lg text-gray-400 leading-relaxed max-w-xl mx-auto">
+            To help every student <strong class="text-white">never miss a deadline again</strong>, so they can focus on learning instead of stressing about organization.
+          </p>
+        </div>
 
         <!-- Values -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">What We Believe</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-6 border border-white/10 rounded-xl bg-white/5">
-                    <div class="flex items-start gap-4">
-                        <div class="text-accent-blue">
-                            <span class="material-symbols-outlined text-[32px]">verified_user</span>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-white mb-2">Privacy First</h3>
-                            <p class="text-sm text-[#a1a1aa]">
-                                Your data is yours. We never sell it. Ever.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 border border-white/10 rounded-xl bg-white/5">
-                    <div class="flex items-start gap-4">
-                        <div class="text-accent-purple">
-                            <span class="material-symbols-outlined text-[32px]">auto_awesome</span>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-white mb-2">AI for Good</h3>
-                            <p class="text-sm text-[#a1a1aa]">
-                                Technology should reduce stress, not add to it.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 border border-white/10 rounded-xl bg-white/5">
-                    <div class="flex items-start gap-4">
-                        <div class="text-emerald-400">
-                            <span class="material-symbols-outlined text-[32px]">group</span>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-white mb-2">Student-Centric</h3>
-                            <p class="text-sm text-[#a1a1aa]">
-                                Built by students who understand the struggle.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 border border-white/10 rounded-xl bg-white/5">
-                    <div class="flex items-start gap-4">
-                        <div class="text-yellow-400">
-                            <span class="material-symbols-outlined text-[32px]">mood</span>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-white mb-2">Simplicity</h3>
-                            <p class="text-sm text-[#a1a1aa]">
-                                One conversation. No complicated dashboards.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+        <h2 class="text-2xl font-semibold text-white mb-6 text-center">What We Believe</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-16">
+          <div class="p-5 border border-white/10 rounded-lg bg-white/[0.03] shadow-aceternity">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-blue-400 text-[22px] mt-0.5 shrink-0">verified_user</span>
+              <div>
+                <h3 class="font-medium text-white mb-1">Privacy First</h3>
+                <p class="text-sm text-gray-400">Your data is yours. We never sell it. Ever.</p>
+              </div>
             </div>
-        </section>
+          </div>
+          <div class="p-5 border border-white/10 rounded-lg bg-white/[0.03] shadow-aceternity">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-brand text-[22px] mt-0.5 shrink-0">auto_awesome</span>
+              <div>
+                <h3 class="font-medium text-white mb-1">AI for Good</h3>
+                <p class="text-sm text-gray-400">Technology should reduce stress, not add to it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-5 border border-white/10 rounded-lg bg-white/[0.03] shadow-aceternity">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-emerald-400 text-[22px] mt-0.5 shrink-0">group</span>
+              <div>
+                <h3 class="font-medium text-white mb-1">Student-Centric</h3>
+                <p class="text-sm text-gray-400">Built by students who understand the struggle.</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-5 border border-white/10 rounded-lg bg-white/[0.03] shadow-aceternity">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-yellow-400 text-[22px] mt-0.5 shrink-0">mood</span>
+              <div>
+                <h3 class="font-medium text-white mb-1">Simplicity</h3>
+                <p class="text-sm text-gray-400">One conversation. No complicated dashboards.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- CTA -->
-        <section class="text-center">
-            <div class="p-12 border border-white/10 rounded-2xl bg-gradient-to-br from-accent-purple/10 to-accent-blue/10">
-                <h2 class="text-3xl font-bold text-white mb-4">Join Us on This Journey</h2>
-                <p class="text-[#a1a1aa] mb-8 max-w-lg mx-auto">
-                    We're launching early 2026. Be among the first students to never miss a deadline again.
-                </p>
-                <a href="index.html#waitlist"
-                    class="inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
-                    Join Waitlist
-                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-                </a>
-            </div>
-        </section>
-    </main>
+    <div class="bg-divide h-[1px] w-full"></div>
+
+    <!-- CTA -->
+    <div class="max-w-7xl mx-auto border-divide border-x">
+      <div class="flex flex-col items-center py-20 px-4">
+        <h2 class="text-center text-2xl font-medium tracking-tight text-neutral-100 md:text-3xl lg:text-4xl">Join Us on This Journey</h2>
+        <p class="text-center text-sm font-medium tracking-tight text-gray-300 md:text-sm lg:text-base mx-auto mt-4 max-w-md">We're launching early 2026. Be among the first students to never miss a deadline again.</p>
+        <div class="mt-8 flex items-center gap-4">
+          <a class="group block rounded-xl px-7 py-3 text-center text-sm font-semibold transition-all duration-200 active:scale-[0.97] bg-white text-black hover:shadow-[0_0_24px_rgba(139,92,246,0.2)]" href="index.html#waitlist">
+            Join Waitlist
+            <span class="inline-block ml-1.5 transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-divide h-[1px] w-full"></div>
 
     <!-- Footer -->
-    <footer class="relative z-10 py-12 px-4 border-t border-white/5 bg-[#050505]">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="flex items-center gap-2 text-white/40">
-                <span class="material-symbols-outlined">school</span>
-                <span class="font-semibold text-white/80">AcademiQ</span>
+    <footer class="max-w-7xl mx-auto border-divide border-x">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 py-16">
+        <div>
+          <div class="flex items-center gap-2.5 mb-6">
+            <div class="size-7 text-white flex items-center justify-center bg-brand/20 rounded-lg border border-brand/30">
+              <span class="material-symbols-outlined text-[18px] text-brand">school</span>
             </div>
-            <div class="flex gap-8 text-sm text-[#a1a1aa]">
-                <a class="hover:text-white transition-colors" href="privacy.html">Privacy Policy</a>
-                <a class="hover:text-white transition-colors" href="terms.html">Terms of Service</a>
-                <a class="hover:text-white transition-colors" href="index.html#waitlist">Contact Support</a>
-            </div>
-            <div class="flex gap-4">
-                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
-                    <span class="material-symbols-outlined text-[20px]">public</span>
-                </a>
-                <a class="text-[#a1a1aa] hover:text-white transition-colors" href="#">
-                    <span class="material-symbols-outlined text-[20px]">alternate_email</span>
-                </a>
-            </div>
+            <span class="text-xl font-medium">AcademiQ</span>
+          </div>
+          <p class="text-sm text-gray-400">Your AI-powered student assistant. Never miss a deadline again.</p>
         </div>
-        <div class="text-center mt-8 text-xs text-[#52525b]">
-            © 2026 AcademiQ. Built with ❤️ for students.
+        <div>
+          <h4 class="font-medium text-sm mb-4 text-gray-200">Product</h4>
+          <ul class="space-y-3">
+            <li><a href="index.html#features" class="text-sm text-gray-400 hover:text-gray-200 transition">Features</a></li>
+            <li><a href="index.html#how-it-works" class="text-sm text-gray-400 hover:text-gray-200 transition">How it Works</a></li>
+            <li><a href="index.html#waitlist" class="text-sm text-gray-400 hover:text-gray-200 transition">Waitlist</a></li>
+            <li><a href="updates.html" class="text-sm text-gray-400 hover:text-gray-200 transition">Updates</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 class="font-medium text-sm mb-4 text-gray-200">Company</h4>
+          <ul class="space-y-3">
+            <li><a href="about.html" class="text-sm text-gray-400 hover:text-gray-200 transition">About</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-gray-200 transition">Blog</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-gray-200 transition">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-medium text-sm mb-4 text-gray-200">Legal</h4>
+          <ul class="space-y-3">
+            <li><a href="privacy.html" class="text-sm text-gray-400 hover:text-gray-200 transition">Privacy Policy</a></li>
+            <li><a href="terms.html" class="text-sm text-gray-400 hover:text-gray-200 transition">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-500">&copy; 2026 AcademiQ. Built for students.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="text-gray-400 hover:text-gray-200 transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-gray-200 transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
     </footer>
+  </main>
 </body>
-
 </html>
