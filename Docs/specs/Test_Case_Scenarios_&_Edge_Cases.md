@@ -301,7 +301,7 @@ This document provides comprehensive test scenarios covering all components, dat
 **Scenario:** Only summarize allowlisted groups
 
 **Test Steps:**
-1. Configure `whatsapp_group_allowlist = ["Project Group", "Study Group"]`
+1. Configure `whatsapp_group_allowlist = {"groups": [{"id": "120363XXX@g.us", "name": "Project Group"}, {"id": "120363YYY@g.us", "name": "Study Group"}]}`
 2. Messages arrive in:
    - "Project Group" (allowlisted) - 30 messages
    - "Family Group" (not allowlisted) - 50 messages
@@ -678,26 +678,27 @@ Would you like me to check your recent emails or classroom assignments?
 
 ## 8. Authentication & Security Tests
 
-### Test Case 8.1: JWT Token Expiration
-**Scenario:** User's JWT token expires
+### Test Case 8.1: Clerk JWT Token Expiration
+**Scenario:** User's Clerk JWT token expires
 
 **Test Steps:**
-1. User logs in, receives JWT with 1-hour expiration
-2. User waits 1 hour
+1. User signs in via Clerk Auth, Clerk issues JWT
+2. Clerk JWT expires (Clerk manages token lifecycle)
 3. User sends chat message
-4. Backend validates JWT, finds it expired
+4. Backend validates Clerk JWT using Clerk SDK, finds it expired
 5. Verify 401 Unauthorized response
-6. Frontend redirects to login
+6. Frontend redirects to sign-in via Clerk
 
 **Expected Result:**
-- Expired tokens rejected
-- User must re-login
+- Expired Clerk tokens rejected by backend
+- Clerk automatically refreshes tokens on the client side
+- If refresh fails, user must re-sign-in via Clerk
 - No data access with expired token
 
 **Edge Cases:**
-- Token expires mid-conversation
-- Token tampered with (invalid signature)
-- Token for different user
+- Token expires mid-conversation (Clerk auto-refreshes)
+- Token tampered with (invalid signature, Clerk SDK rejects)
+- Token for different user (clerk_id mismatch)
 
 ### Test Case 8.2: WhatsApp Service API Key Authentication
 **Scenario:** WhatsApp service authenticates to backend
@@ -1096,7 +1097,7 @@ Would you like me to check your recent emails or classroom assignments?
 
 **Test Steps:**
 1. User opens web app
-2. Logs in with username/password
+2. Signs in via Clerk Auth (Google social login or email/password)
 3. Creates new conversation
 4. Asks: "What's my schedule today?"
 5. Receives AI response with schedule
@@ -1104,7 +1105,7 @@ Would you like me to check your recent emails or classroom assignments?
 7. Receives detailed response
 8. Marks announcement as seen
 9. Clicks "Refetch Data"
-10. Logs out
+10. Signs out via Clerk UserButton
 
 **Expected Result:**
 - All steps complete successfully

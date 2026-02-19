@@ -10,12 +10,12 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
 - Create new Supabase project with PostgreSQL database
 - Configure database connection settings and security rules
 - Implement 6 core tables with complete schemas:
-  - `users` - User accounts with authentication credentials
+  - `users` - User accounts synced from Clerk Auth
   - `conversations` - Chat conversation threads
   - `conversation_messages` - Individual messages within conversations
   - `sync_state` - Data ingestion cursors and timestamps for all sources
   - `user_settings` - User preferences including importance rules and allowlists
-  - `oauth_tokens` - OAuth 2.0 access and refresh tokens for Gmail/Classroom
+  - `oauth_tokens` - OAuth 2.0 access and refresh tokens for Google API access (Gmail, Calendar, Classroom)
 - Set up all foreign key constraints with appropriate cascade rules
 - Create database indexes on user_id and timestamp columns for query performance
 - Establish migration framework (Alembic for Python or Supabase migrations)
@@ -45,12 +45,12 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
 
 - **Supabase Project**: Fully configured and accessible PostgreSQL database instance
 - **Database Tables**: 6 core tables created with schemas:
-  - users (id, username, password_hash, created_at, updated_at)
+  - users (id, clerk_id, email, username, created_at, updated_at)
   - conversations (id, user_id, title, created_at, updated_at)
   - conversation_messages (id, conversation_id, role, content, created_at)
   - sync_state (id, user_id, source, scope_key, last_synced_at, last_external_id, updated_at)
   - user_settings (id, user_id, important_senders, keyword_rules, whatsapp_group_allowlist, notification_preferences, created_at, updated_at)
-  - oauth_tokens (id, user_id, provider, access_token, refresh_token, expires_at, created_at, updated_at)
+  - oauth_tokens (id, user_id, provider, access_token, refresh_token, expires_at, scopes, created_at, updated_at)
 - **Foreign Key Constraints**:
   - conversations.user_id → users.id (ON DELETE CASCADE)
   - conversation_messages.conversation_id → conversations.id (ON DELETE CASCADE)
@@ -60,8 +60,8 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
 - **Database Indexes**:
   - user_id indexes on all tables referencing users
   - Timestamp indexes (created_at, updated_at, last_synced_at)
-  - Unique constraints (username on users table)
-- **Connection String**: DATABASE_URL environment variable value
+  - Unique constraints (clerk_id on users table)
+- **Connection Credentials**: SUPABASE_URL and SUPABASE_KEY environment variable values (or DATABASE_URL for direct PostgreSQL access)
 - **Migration Scripts**: Versioned SQL migration files in repository
 - **Documentation**: Schema documentation and migration guide
 
@@ -80,7 +80,7 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
    - Create initial migration file
 
 3. **Core Table Schema Implementation**:
-   - Define users table with authentication fields
+   - Define users table with Clerk Auth fields (clerk_id, email, username)
    - Define conversations table with user relationship
    - Define conversation_messages table with conversation relationship
    - Define sync_state table with multi-source cursor tracking
@@ -95,7 +95,7 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
 5. **Index Creation**:
    - Create indexes on user_id columns across all tables
    - Create indexes on timestamp columns (created_at, updated_at, last_synced_at)
-   - Create unique index on users.username
+   - Create unique index on users.clerk_id and index on users.email
    - Create composite indexes where needed (e.g., user_id + source on sync_state)
 
 6. **Migration Execution**:
@@ -105,14 +105,15 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
    - Test rollback capability
 
 7. **Connection Configuration**:
-   - Extract DATABASE_URL from Supabase dashboard
-   - Document connection string format and security requirements
-   - Create .env.example with DATABASE_URL placeholder
+   - Extract SUPABASE_URL and SUPABASE_KEY from Supabase dashboard
+   - Extract DATABASE_URL (PostgreSQL URI) for direct database access
+   - Document connection credentials and security requirements
+   - Create .env.example with SUPABASE_URL, SUPABASE_KEY, and DATABASE_URL placeholders
 
 8. **Validation and Testing**:
    - Verify table creation with SELECT queries
    - Test foreign key constraints with sample data
-   - Test unique constraints (duplicate username)
+   - Test unique constraints (duplicate clerk_id)
    - Verify cascade delete behavior
    - Document schema in README or separate schema documentation file
 
@@ -275,10 +276,11 @@ SELECT COUNT(*) FROM conversations;
 - Application logic must enforce user_id filtering on all queries
 - ON DELETE CASCADE ensures user data is completely removed on account deletion
 
-**Password Storage**:
-- users.password_hash field stores bcrypt hashed passwords
-- Never store plaintext passwords
-- Password hashing handled by application layer (not database)
+**User Authentication**:
+- User authentication is handled entirely by Clerk Auth (no passwords stored in database)
+- `users.clerk_id` stores the Clerk user identifier (e.g., `user_2AbCdEfGhIjKlMnOpQrSt`)
+- Users are created via Clerk webhook when they sign up, not manually seeded
+- `users.email` is required and synced from Clerk
 
 ## 11. Scaling Considerations
 

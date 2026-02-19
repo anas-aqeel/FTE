@@ -19,19 +19,13 @@ All **6 blocking/recommended issues** from the spec review have been resolved. T
 
 **Problem:** No way to create the first user - no registration endpoint or seeding mechanism.
 
-**Resolution:**
-- **Updated:** `ticket:69889a16-05f6-4f4a-bf1a-8cf0daec03b5/26e5cdc6-8a3c-49a8-a2eb-4dca9b542123` (FastAPI Auth)
-- **Added to scope:** "Seed initial user via migration script or management command (username/password from env vars)"
-- **Added to acceptance criteria:** "Initial user seeded (via migration or management command)"
-- **Future path:** `POST /auth/register` endpoint in Phase 2 with Clerk Auth
+**Resolution (Updated for Clerk Auth):**
+- **Clerk Auth now handles user creation automatically.** Users sign up via Clerk's pre-built UI components.
+- When a user signs up, Clerk sends a webhook to `POST /webhooks/clerk`, which creates the user in our `users` table with their `clerk_id` and `email`.
+- **No manual seeding required.** No `POST /auth/register` endpoint needed.
+- **Updated:** FastAPI Auth ticket now uses Clerk JWT verification instead of custom username/password auth.
 
-**Implementation Approach:**
-```python
-# Migration or management command
-# Reads from environment variables:
-# INITIAL_USERNAME=admin
-# INITIAL_PASSWORD=<strong_password>
-```
+**Note:** This issue is fully superseded by the Clerk Auth migration. The original seeding approach is no longer needed.
 
 ---
 
@@ -244,7 +238,7 @@ All blocking and recommended issues have been addressed. The specs and tickets a
 2. **Tickets** - Updated 6 tickets with clarifications and fixes
 3. **Schema** - Added `raw_classroom_announcements` table
 4. **Dependencies** - Fixed Celery Gmail dependency (removed incorrect sync status dependency)
-5. **User Creation** - Added seeding mechanism to FastAPI Auth ticket
+5. **User Creation** - ~~Added seeding mechanism~~ → Now handled by Clerk Auth webhooks (no manual seeding needed)
 6. **Loop Prevention** - Added custom header filtering for self-notifications
 7. **Backfill Limit** - Added 30-day initial sync limit
 8. **Cross-Service Note** - Added to WhatsApp Summarization ticket
@@ -271,4 +265,10 @@ All blocking and recommended issues have been addressed. The specs and tickets a
 
 All critical gaps are closed. The documentation is now comprehensive and production-ready.
 
-**Last Updated:** 2026-02-18
+**Clerk Auth Migration (2026-02-19):**
+12. **All docs updated for Clerk Auth** - Tech Plan, all agent specs, all tickets, test cases updated to use Clerk Auth instead of custom username/password authentication
+13. **Environment variables standardized** - SUPABASE_URL/SUPABASE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET, GOOGLE_CLIENT_ID/SECRET, ENCRYPTION_KEY
+14. **WhatsApp allowlist format** - Updated from String[] to JSONB `{"groups": [{id, name, added_at}]}` across all docs
+15. **OAuth provider naming** - Standardized to single `'google'` provider instead of separate `'gmail'`/`'google_classroom'`
+
+**Last Updated:** 2026-02-19

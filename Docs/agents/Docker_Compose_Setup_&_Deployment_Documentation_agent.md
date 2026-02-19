@@ -56,16 +56,17 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
 
 - **Docker Compose Configuration**:
   - Service definitions (backend, frontend, celery-worker, celery-beat, redis)
-  - Environment variables (DATABASE_URL, GEMINI_API_KEY, etc.)
+  - Environment variables (SUPABASE_URL, SUPABASE_KEY, CLERK_SECRET_KEY, GEMINI_API_KEY, etc.)
   - Volume mounts (Redis persistence)
   - Network configuration
 - **Dockerfiles**:
   - backend/Dockerfile: Base image (python:3.10-slim), install dependencies, copy code, CMD
   - frontend/Dockerfile: Base image (node:18-alpine), build Next.js app, CMD
 - **Environment Variables** (from all previous tickets):
-  - DATABASE_URL, JWT_SECRET, GEMINI_API_KEY, WHATSAPP_API_KEY
-  - GMAIL_OAUTH_CLIENT_ID, GMAIL_OAUTH_CLIENT_SECRET
-  - REDIS_URL, BACKEND_API_URL, NEXT_PUBLIC_API_URL
+  - SUPABASE_URL, SUPABASE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET
+  - GEMINI_API_KEY, WHATSAPP_API_KEY
+  - GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ENCRYPTION_KEY
+  - REDIS_URL, BACKEND_API_URL, NEXT_PUBLIC_API_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, FRONTEND_URL
 - **OAuth Tokens** (manual setup):
   - User must authenticate Gmail/Classroom once
   - Tokens stored in oauth_tokens table
@@ -79,14 +80,14 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
     backend:
       build: ./backend
       ports: ["8000:8000"]
-      environment: [DATABASE_URL, JWT_SECRET, GEMINI_API_KEY, REDIS_URL]
+      environment: [SUPABASE_URL, SUPABASE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET, GEMINI_API_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ENCRYPTION_KEY, REDIS_URL, WHATSAPP_API_KEY, FRONTEND_URL]
       depends_on: [redis]
       healthcheck: {test: ["CMD", "curl", "-f", "http://localhost:8000/health"]}
 
     frontend:
       build: ./frontend
       ports: ["3000:3000"]
-      environment: [NEXT_PUBLIC_API_URL]
+      environment: [NEXT_PUBLIC_API_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY]
       depends_on: [backend]
 
     celery-worker:
@@ -114,15 +115,27 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
 
 - **.env.example**:
   ```env
-  DATABASE_URL=postgresql://user:pass@host:5432/db
-  JWT_SECRET=your-256-bit-secret-key
+  # Supabase
+  SUPABASE_URL=https://your-project.supabase.co
+  SUPABASE_KEY=your-service-role-key
+
+  # Clerk Auth
+  CLERK_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxx
+  CLERK_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxx
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxx
+
+  # Google OAuth (for API access)
+  GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+  GOOGLE_CLIENT_SECRET=your-client-secret
+  ENCRYPTION_KEY=your-32-byte-encryption-key
+
+  # Services
   GEMINI_API_KEY=your-gemini-api-key
   WHATSAPP_API_KEY=your-whatsapp-api-key
-  GMAIL_OAUTH_CLIENT_ID=your-client-id
-  GMAIL_OAUTH_CLIENT_SECRET=your-client-secret
   REDIS_URL=redis://redis:6379/0
   BACKEND_API_URL=http://backend:8000
   NEXT_PUBLIC_API_URL=http://localhost:8000
+  FRONTEND_URL=http://localhost:3000
   ```
 
 - **README.md** (comprehensive documentation):
@@ -192,11 +205,12 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
    - Celery: celery -A app.celery inspect ping (in worker container)
 
 8. **README Documentation**:
-   - Prerequisites: Docker 20+, Docker Compose 2+, Supabase account, Google Cloud project (OAuth)
+   - Prerequisites: Docker 20+, Docker Compose 2+, Supabase account, Clerk account, Google Cloud project (OAuth for API access)
    - Quick start: git clone, cd project, cp .env.example .env, edit .env, docker-compose up
-   - OAuth setup: Step-by-step guide (Google Cloud Console, enable APIs, create credentials, authorize)
+   - Clerk setup: Create Clerk application, configure social login (Google), get API keys
+   - Google OAuth setup: Step-by-step guide (Google Cloud Console, enable APIs, create credentials for API access)
    - Commands: docker-compose up, down, logs, restart, ps
-   - Troubleshooting: Common errors (database connection failed, Redis connection refused, OAuth errors)
+   - Troubleshooting: Common errors (database connection failed, Redis connection refused, Clerk JWT verification errors, Google OAuth errors)
 
 9. **WhatsApp VPS Deployment Guide**:
    - VPS provisioning: Choose Ubuntu 22.04, 1GB RAM minimum
@@ -208,9 +222,10 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
    - Monitoring: docker logs -f whatsapp-service, docker stats
 
 10. **Troubleshooting Guide**:
-    - Database connection errors: Check DATABASE_URL, verify Supabase project active
+    - Database connection errors: Check SUPABASE_URL and SUPABASE_KEY, verify Supabase project active
     - Redis connection errors: Check redis service running (docker ps), check REDIS_URL
-    - OAuth errors: Re-authenticate, check token expiration
+    - Clerk auth errors: Check CLERK_SECRET_KEY, verify Clerk application configured
+    - Google OAuth errors: Re-authenticate via "Connect Google Account" button, check token expiration
     - Celery worker not processing tasks: Check Redis connection, check worker logs
     - Frontend not connecting to backend: Check NEXT_PUBLIC_API_URL, check CORS settings
     - WhatsApp QR code not displaying: Check logs, ensure session not already active
@@ -254,7 +269,7 @@ Create comprehensive Docker Compose configuration to orchestrate all services (b
 ## 8. Failure Handling
 
 **Service Startup Failures**:
-- Backend fails: Check DATABASE_URL, check logs (docker-compose logs backend)
+- Backend fails: Check SUPABASE_URL/SUPABASE_KEY, CLERK_SECRET_KEY, check logs (docker-compose logs backend)
 - Celery worker fails: Check REDIS_URL, check backend connection
 - Redis fails: Check volume permissions, check port conflicts
 

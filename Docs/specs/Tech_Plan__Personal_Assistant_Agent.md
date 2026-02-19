@@ -299,7 +299,7 @@ subject: Text
 summary: Text (AI-generated)
 sender: String
 importance_score: Float (0-1)
-category: String (task, announcement, meeting, personal)
+category: String (task, announcement, meeting, personal, spam)
 extracted_deadline: Timestamp (nullable)
 is_seen: Boolean
 source: String ('gmail')
@@ -319,7 +319,7 @@ start_time: Timestamp
 end_time: Timestamp
 location: String
 importance_score: Float (0-1)
-event_type: String (class, meeting, deadline, personal)
+event_type: String (class, meeting, deadline, exam, social, personal)
 is_seen: Boolean
 source: String ('gmail_invite' | 'google_calendar')
 processed_at: Timestamp
@@ -385,8 +385,9 @@ processed_at: Timestamp
 
 ```sql
 id: UUID (PK)
-username: String (unique)
-password_hash: String
+clerk_id: String (unique, from Clerk Auth)
+email: String (required)
+username: String (optional, defaults to email prefix)
 created_at: Timestamp
 updated_at: Timestamp
 ```
@@ -396,10 +397,11 @@ updated_at: Timestamp
 ```sql
 id: UUID (PK)
 user_id: UUID (FK to users)
-provider: String (gmail, google_classroom)
+provider: String ('google') -- single provider for Gmail, Calendar, and Classroom
 access_token: String (encrypted)
 refresh_token: String (encrypted)
 expires_at: Timestamp
+scopes: String[] (granted OAuth scopes)
 created_at: Timestamp
 updated_at: Timestamp
 ```
@@ -431,7 +433,7 @@ id: UUID (PK)
 user_id: UUID (FK to users)
 important_senders: String[] (email addresses/names)
 keyword_rules: JSONB (importance keywords)
-whatsapp_group_allowlist: String[] (group names/ids to summarize hourly)
+whatsapp_group_allowlist: JSONB ({"groups": [{id, name, added_at}]} — matched by stable group ID, not name)
 notification_preferences: JSONB
 created_at: Timestamp
 updated_at: Timestamp
@@ -501,7 +503,7 @@ graph TD
 **Responsibilities:**
 
 - Render chat interface with conversation threads
-- Handle user authentication (username/password)
+- Handle user authentication via Clerk Auth (social login, email/password)
 - Display conversation history
 - Provide "Refetch Data" button for on-demand ingestion
 - Show sync status indicators
@@ -509,7 +511,7 @@ graph TD
 
 **Key Interfaces:**
 
-- `POST /auth/login` - User authentication
+- Clerk Auth handles sign-in/sign-up (no custom auth endpoints)
 - `GET /conversations` - List user's conversation threads
 - `POST /conversations` - Create new conversation thread
 - `GET /conversations/{id}/messages` - Fetch conversation history
@@ -542,11 +544,12 @@ graph TD
 
 **Key API Endpoints:**
 
-*Authentication:*
+*Authentication (Clerk Auth):*
 
-- `POST /auth/login` - User login
-- `POST /auth/logout` - User logout
-- `GET /auth/me` - Get current user
+- `GET /auth/me` - Get current user (verifies Clerk JWT)
+- `POST /webhooks/clerk` - Sync user events from Clerk (create/update/delete)
+- `GET /google/auth-url` - Generate Google OAuth URL for API access
+- `GET /google/callback` - Handle Google OAuth callback
 
 *Conversations:*
 
@@ -566,6 +569,13 @@ graph TD
 
 - `PATCH /announcements/{id}/seen` - Mark announcement as seen
 - `GET /sync/status` - Get last sync timestamps
+
+*WhatsApp Settings:*
+
+- `GET /whatsapp/groups` - List available WhatsApp groups
+- `GET /whatsapp/allowlist` - Get current group allowlist
+- `POST /whatsapp/allowlist` - Update group allowlist
+- `POST /whatsapp/group-update` - Handle group name changes (called by WhatsApp service)
 
 **Integration Points:**
 
@@ -708,16 +718,16 @@ services:
   backend:
     - FastAPI application
     - Exposes port 8000
-    - Environment: DATABASE_URL, GEMINI_API_KEY, REDIS_URL
-  
+    - Environment: SUPABASE_URL, SUPABASE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET, GEMINI_API_KEY, REDIS_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ENCRYPTION_KEY, WHATSAPP_API_KEY, FRONTEND_URL
+
   frontend:
     - Next.js application
     - Exposes port 3000
-    - Environment: NEXT_PUBLIC_API_URL
+    - Environment: NEXT_PUBLIC_API_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   
   celery-worker:
     - Celery worker process
-    - Environment: DATABASE_URL, GEMINI_API_KEY, REDIS_URL
+    - Environment: SUPABASE_URL, SUPABASE_KEY, GEMINI_API_KEY, REDIS_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ENCRYPTION_KEY
   
   celery-beat:
     - Celery scheduler for periodic tasks
@@ -734,6 +744,7 @@ services:
 - Deployed independently on OCI/Writer Cloud VPS
 - Docker container with Node.js + whatsapp-web.js
 - Environment: BACKEND_API_URL, GEMINI_API_KEY, WHATSAPP_API_KEY
+- Volume for hourly buffer persistence (SQLite / append-only files)
 - Volume for WhatsApp session persistence
 
 ### Inter-Component Communication
@@ -742,7 +753,7 @@ services:
 
 - Protocol: HTTPS REST API
 - Format: JSON
-- Authentication: JWT tokens (from username/password login)
+- Authentication: Clerk JWT tokens (from Clerk Auth sign-in)
 
 **Backend ↔ Celery:**
 
@@ -781,7 +792,7 @@ services:
   - API keys (Gemini, WhatsApp service) in environment variables
   - No secrets in code or Docker images
 2. **Authentication:**
-  - Frontend → Backend: JWT tokens with expiration (from username/password login)
+  - Frontend → Backend: Clerk JWT tokens (verified via Clerk SDK)
   - WhatsApp Service → Backend: API key authentication (shared secret in headers)
   - Backend → Gmail/Classroom: OAuth 2.0 refresh tokens
 3. **Network Security:**

@@ -2,58 +2,74 @@
 
 ## 1. Purpose
 
-Set up a production-ready Next.js frontend application with TypeScript, server-side rendering, authentication pages (login/logout), main application layout structure, and API client for backend communication in the Personal Assistant Agent system.
+Set up a production-ready Next.js frontend application with TypeScript, Clerk Auth integration for authentication, main application layout structure, and API client for backend communication in the Personal Assistant Agent system.
 
 ## 2. Scope
 
 **In Scope:**
-- Next.js project setup with TypeScript and SSR (App Router)
+- Next.js project setup with TypeScript and App Router
+- **Clerk Auth integration:**
+  - ClerkProvider wrapping the application
+  - Pre-built authentication UI (`<SignIn>`, `<SignUp>`, `<UserButton>`)
+  - Protected routes using Clerk middleware
+  - Automatic session management and token refresh
+  - Social login (Google) and email/password via Clerk
 - Authentication pages:
-  - Login page (/login) with username/password form
-  - Logout functionality (clear JWT token, redirect to login)
+  - Sign-in page (/sign-in) with Clerk `<SignIn>` component
+  - Sign-up page (/sign-up) with Clerk `<SignUp>` component
 - Main layout structure (for authenticated pages):
-  - Header component with user info and logout button
+  - Header component with Clerk `<UserButton>` and navigation
   - Sidebar component for conversation list (placeholder initially)
   - Main content area for chat interface (placeholder initially)
   - Responsive design foundation (mobile-first)
 - API client setup for backend communication:
-  - Axios or fetch with automatic JWT token injection
+  - Server-side API client with automatic Clerk JWT injection
+  - Client-side API client using Clerk `useUser` hook for token
   - Base URL configuration (http://localhost:8000 for development)
   - Error handling and retry logic
-- JWT token storage:
-  - Store in localStorage (simple for MVP) or httpOnly cookies (more secure)
-  - Automatic token refresh logic (future enhancement)
-- Authentication state management:
-  - React Context or Zustand for global auth state
-  - isAuthenticated, currentUser, login, logout functions
+- Google Account connection UI:
+  - "Connect Google Account" button for granting API access
+  - Connection status display
 - Protected routes:
-  - Redirect to /login if not authenticated
-  - Middleware or route guards
+  - Clerk middleware redirects unauthenticated users to /sign-in
+  - Dashboard and all sub-routes protected
 - Responsive design:
   - Mobile-friendly (sidebar collapsible)
   - Tailwind CSS for styling
-- Environment configuration (.env.local for NEXT_PUBLIC_API_URL)
+- Environment configuration (.env.local for NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, NEXT_PUBLIC_API_URL)
 
 **Out of Scope:**
+- ~~Custom login/signup forms~~ (Clerk provides UI)
+- ~~Manual JWT storage~~ (Clerk handles automatically)
+- ~~Custom auth state management~~ (Clerk provides hooks and context)
 - Chat interface implementation (separate ticket)
 - Conversation management UI (separate ticket)
 - Sync status display (separate ticket)
 - Settings page (Phase 2)
-- User registration (Phase 2)
+
+**Note:** All user authentication is handled by Clerk. This ticket focuses on integrating Clerk components, configuring protected routes, and connecting to the backend with Clerk JWTs.
 
 ## 3. Inputs
 
 - **Environment Variables** (.env.local):
+  - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: Clerk publishable key (from Clerk Dashboard)
+  - CLERK_SECRET_KEY: Clerk secret key (for server-side operations)
   - NEXT_PUBLIC_API_URL: Backend API base URL (http://localhost:8000)
+- **Clerk Dashboard Configuration**:
+  - Clerk application created
+  - Social login (Google) enabled
+  - Email/password authentication enabled
+  - Redirect URLs configured
 - **Backend API Endpoints**:
-  - POST /auth/login: {username, password} → {access_token, user}
-  - GET /auth/me: (with JWT) → {id, username}
-  - POST /auth/logout: (with JWT) → {message}
-- **User Input**:
-  - Login form: username, password
-- **Local Storage** (or cookies):
-  - JWT token (access_token)
-  - User data (username, id)
+  - GET /auth/me: (with Clerk JWT) → {id, clerk_id, email, username}
+  - GET /google/auth-url: (with Clerk JWT) → {auth_url}
+  - GET /google/callback: (OAuth callback)
+- **Clerk SDK**:
+  - `@clerk/nextjs` package
+  - ClerkProvider, SignIn, SignUp, UserButton components
+  - useUser, useAuth hooks
+  - clerkMiddleware for route protection
+  - auth() for server-side token access
 
 ## 4. Outputs
 
@@ -62,115 +78,128 @@ Set up a production-ready Next.js frontend application with TypeScript, server-s
     ```
     frontend/
     ├── app/
-    │   ├── layout.tsx (root layout)
-    │   ├── page.tsx (home/redirect)
-    │   ├── login/
-    │   │   └── page.tsx
+    │   ├── layout.tsx (root layout with ClerkProvider)
+    │   ├── page.tsx (landing page)
+    │   ├── sign-in/
+    │   │   └── [[...sign-in]]/
+    │   │       └── page.tsx (Clerk SignIn component)
+    │   ├── sign-up/
+    │   │   └── [[...sign-up]]/
+    │   │       └── page.tsx (Clerk SignUp component)
     │   └── dashboard/
-    │       ├── layout.tsx (authenticated layout)
-    │       └── page.tsx (placeholder)
+    │       ├── layout.tsx (authenticated layout with header/sidebar)
+    │       ├── page.tsx (dashboard home with Google connection)
+    │       └── settings/
+    │           └── page.tsx (placeholder)
     ├── components/
-    │   ├── Header.tsx
-    │   ├── Sidebar.tsx
-    │   └── ProtectedRoute.tsx
+    │   ├── GoogleConnectionButton.tsx
+    │   └── (future components)
     ├── lib/
-    │   ├── api.ts (API client)
-    │   └── auth.ts (auth helpers)
-    ├── context/
-    │   └── AuthContext.tsx
+    │   └── api.ts (API client with Clerk token injection)
+    ├── middleware.ts (Clerk route protection)
     ├── .env.local
     ├── next.config.js
     ├── tailwind.config.js
     └── package.json
     ```
-- **Login Page UI**:
-  - Username and password input fields
-  - Login button
-  - Error message display (invalid credentials)
-  - Loading state during API call
+- **Sign-In Page UI**: Clerk `<SignIn>` component with Google social login and email/password
+- **Sign-Up Page UI**: Clerk `<SignUp>` component
 - **Authenticated Layout UI**:
-  - Header: App logo, user info (username), logout button
-  - Sidebar: Placeholder for conversation list
-  - Main content area: Placeholder or redirect to chat
+  - Header: App name, user email, Clerk `<UserButton>` (profile, sign out)
+  - Sidebar: Navigation links, conversation list placeholder
+  - Main content area: Dashboard home or sub-pages
 - **API Client**:
-  - HTTP client with JWT token injection
-  - Functions: login(username, password), logout(), getCurrentUser()
-- **Auth State Management**:
-  - Global state: {isAuthenticated, user, login, logout}
-  - Context provider wrapping app
+  - Server-side: `serverFetch(endpoint, options)` - auto-injects Clerk JWT from `auth()`
+  - Client-side: `clientFetch(endpoint, token, options)` - uses token from `useUser().getToken()`
+- **Google Connection**: Button to initiate Google OAuth flow via backend
 
 ## 5. Internal Responsibilities
 
 1. **Next.js Project Initialization**:
-   - Create Next.js app with TypeScript: npx create-next-app@latest --typescript
-   - Install dependencies: axios (or use fetch), tailwindcss, zustand (optional)
+   - Create Next.js app with TypeScript: `npx create-next-app@latest --typescript --tailwind --app --eslint`
+   - Install Clerk: `npm install @clerk/nextjs`
    - Configure App Router (app/ directory)
 
-2. **API Client Setup**:
-   - Create lib/api.ts with Axios instance
-   - Set baseURL from NEXT_PUBLIC_API_URL
-   - Add request interceptor to inject JWT token from localStorage
-   - Add response interceptor for error handling (401 → redirect to login)
+2. **Clerk Provider Setup**:
+   - Wrap application with `<ClerkProvider>` in root layout.tsx
+   - Configure Clerk appearance/theming if desired
+   - Set up environment variables (NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY)
 
-3. **Authentication Context**:
-   - Create context/AuthContext.tsx
-   - Implement AuthProvider with state: {isAuthenticated, user, login, logout}
-   - login function: Call POST /auth/login, store token in localStorage, set user state
-   - logout function: Clear token from localStorage, reset state, redirect to /login
-   - Initialize state on mount: Check localStorage for token, validate with GET /auth/me
+3. **Authentication Pages**:
+   - Create /sign-in/[[...sign-in]]/page.tsx with Clerk `<SignIn>` component
+   - Create /sign-up/[[...sign-up]]/page.tsx with Clerk `<SignUp>` component
+   - Configure routing props (path, signUpUrl, signInUrl, afterSignInUrl, afterSignUpUrl)
+   - Style with centered layout and consistent design
 
-4. **Login Page**:
-   - Create app/login/page.tsx
-   - Form with username and password inputs (controlled components)
-   - Handle form submission: call AuthContext.login()
-   - Display loading spinner during API call
-   - Show error message on failure (invalid credentials)
-   - Redirect to /dashboard on successful login
+4. **Clerk Middleware (Protected Routes)**:
+   - Create middleware.ts in project root
+   - Use `clerkMiddleware` and `createRouteMatcher`
+   - Define public routes: /, /sign-in(.*), /sign-up(.*), /api/webhooks(.*)
+   - Protect all other routes (redirect to /sign-in if unauthenticated)
+   - Configure matcher to skip Next.js internals and static files
 
-5. **Protected Routes**:
-   - Create ProtectedRoute component or middleware
-   - Check AuthContext.isAuthenticated
-   - Redirect to /login if not authenticated
-   - Wrap all authenticated pages with ProtectedRoute
-
-6. **Authenticated Layout**:
+5. **Dashboard Layout (Authenticated)**:
    - Create app/dashboard/layout.tsx
-   - Render Header, Sidebar, and children (main content area)
-   - Apply responsive design (sidebar collapsible on mobile)
+   - Use `currentUser()` server function to get authenticated user
+   - Redirect to /sign-in if not authenticated
+   - Render Header with user email and Clerk `<UserButton>`
+   - Render Sidebar with navigation links and conversation list placeholder
+   - Render main content area with children
 
-7. **Header Component**:
-   - Display app logo/name
-   - Show current user's username
-   - Logout button: calls AuthContext.logout()
+6. **Dashboard Home Page**:
+   - Create app/dashboard/page.tsx
+   - Display welcome message with user's name
+   - Show "Get Started" section with Google Account connection
+   - Show "Start a Conversation" teaser
 
-8. **Sidebar Component**:
-   - Placeholder for conversation list (implement in next ticket)
-   - Collapsible on mobile (hamburger menu)
+7. **Google Connection Button**:
+   - Create components/GoogleConnectionButton.tsx
+   - Use `useUser()` hook to get Clerk token
+   - On click: Call `GET /google/auth-url` with Clerk JWT
+   - Receive Google OAuth URL from backend
+   - Redirect user to Google consent screen
+   - Display connection status (connecting, connected, error)
 
-9. **Responsive Design**:
-   - Use Tailwind CSS utility classes
-   - Mobile-first breakpoints (md:, lg:)
-   - Test on mobile and desktop viewports
+8. **API Client Setup**:
+   - Create lib/api.ts
+   - Server-side `serverFetch()`: Uses `auth()` from @clerk/nextjs/server to get token
+   - Client-side `clientFetch()`: Accepts token parameter (from `user.getToken()`)
+   - Both inject Authorization: Bearer {token} header
+   - Both set Content-Type: application/json
+   - Handle errors (401 → redirect, 500 → display message)
 
-10. **Environment Configuration**:
-    - Create .env.local with NEXT_PUBLIC_API_URL
+9. **Landing Page**:
+   - Create app/page.tsx (public route)
+   - Display app name and description
+   - "Get Started" link to /sign-up
+   - "Sign In" link to /sign-in
+   - Simple, clean design
+
+10. **Responsive Design**:
+    - Use Tailwind CSS utility classes
+    - Mobile-first breakpoints (md:, lg:)
+    - Sidebar collapsible on mobile
+    - Test on mobile and desktop viewports
+
+11. **Environment Configuration**:
+    - Create .env.local with NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY, NEXT_PUBLIC_API_URL
     - Create .env.example for documentation
     - Never commit .env.local to Git
 
 ## 6. Dependencies
 
 **External Services:**
-- FastAPI Backend (authentication endpoints)
+- Clerk Auth (Clerk application configured in Clerk Dashboard)
+- FastAPI Backend (authentication endpoints with Clerk JWT verification)
 
 **Libraries/Tools:**
 - Next.js 14+ with App Router
 - TypeScript
+- @clerk/nextjs (Clerk SDK for Next.js)
 - Tailwind CSS
-- Axios (or fetch)
-- React Context or Zustand (state management)
 
 **Ticket Dependencies:**
-- FastAPI_Project_Setup_&_Authentication (provides backend auth endpoints)
+- FastAPI_Project_Setup_&_Authentication (provides backend Clerk JWT verification and Google OAuth endpoints)
 
 **Blocks:**
 - Next.js_Frontend_-_Chat_Interface_&_Conversation_Management (needs layout and auth)
@@ -186,62 +215,73 @@ Set up a production-ready Next.js frontend application with TypeScript, server-s
 **Rendering**:
 - SSR for initial page load (faster first contentful paint)
 - Client-side navigation (React Router behavior)
+- Clerk middleware runs on edge for fast route protection
 
 **Response Time**:
 - Initial page load: <2 seconds
 - Client-side navigation: <500ms
+- Clerk auth check: <100ms (cached sessions)
 
 ## 8. Failure Handling
 
 **Backend API Failures:**
 - Network errors: Display error message, retry button
-- 401 Unauthorized: Redirect to /login (token expired or invalid)
+- 401 Unauthorized: Clerk auto-refreshes token; if persistent, redirect to /sign-in
 - 500 Internal Server Error: Display generic error message
 
-**Login Failures:**
-- Invalid credentials (400): Show "Invalid username or password"
-- Network timeout: Show "Unable to connect to server, please try again"
+**Clerk Authentication Failures:**
+- Clerk service down: Show error page with "Authentication service unavailable"
+- Social login failure: Clerk displays error in its own UI
+- Token refresh failure: Redirect to /sign-in
 
-**Token Expiration:**
-- JWT expires: Detect 401 response, redirect to /login
-- Automatic refresh (Phase 2): Implement refresh token flow
+**Google OAuth Failures:**
+- Backend returns error: Display "Failed to connect Google Account, please try again"
+- User denies consent: Show appropriate message
+- Callback error: Display error with retry option
 
 **State Synchronization:**
-- If localStorage token exists but GET /auth/me fails: Clear token, redirect to /login
+- Clerk handles all session state (no localStorage management needed)
+- If `auth()` returns null on server, redirect to /sign-in
 
 ## 9. Observability
 
 **Logging** (client-side console logs for development):
 - API requests (method, URL, status)
-- Authentication events (login success/failure, logout)
-- Errors (API errors, validation errors)
+- Google OAuth flow events (initiated, success, error)
+- Errors (API errors, component errors)
 
 **Monitoring** (future):
 - Frontend error tracking (Sentry, LogRocket)
 - Performance monitoring (Vercel Analytics, Google Lighthouse)
-- User analytics (page views, login frequency)
+- User analytics (page views, sign-in frequency)
+- Clerk Dashboard provides built-in user analytics
 
 ## 10. Security Considerations
 
-**JWT Token Storage:**
-- localStorage: Simple but vulnerable to XSS attacks
-- httpOnly cookies: More secure (not accessible via JavaScript)
-- Recommendation: Use httpOnly cookies for production
+**Authentication Security (Clerk)**:
+- Clerk handles all authentication security (password hashing, session management, token refresh)
+- No JWT tokens stored in localStorage (Clerk manages token lifecycle)
+- No custom auth code to maintain or audit
+- Clerk provides CSRF protection, XSS protection, and secure session cookies
+- All Clerk communication uses HTTPS
 
 **XSS Prevention:**
 - Sanitize all user input (React handles this by default)
 - Never use dangerouslySetInnerHTML with user-provided content
 
-**CSRF Protection:**
-- If using cookies: Implement CSRF tokens
-- If using localStorage: No CSRF risk (but XSS risk)
+**Google OAuth Security:**
+- OAuth tokens never exposed to frontend (stored in backend database)
+- Frontend only initiates OAuth flow via backend endpoint
+- State parameter prevents CSRF in OAuth flow
 
 **HTTPS:**
 - Use HTTPS in production (Vercel/Netlify handle automatically)
+- Clerk enforces HTTPS for all authentication flows
 
 **Environment Variables:**
-- Never expose backend secrets in NEXT_PUBLIC_* variables
-- Only expose API URL (public information)
+- Never expose CLERK_SECRET_KEY in NEXT_PUBLIC_* variables
+- Only expose NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY (designed to be public)
+- Only expose NEXT_PUBLIC_API_URL (public information)
 
 ## 11. Scaling Considerations
 
@@ -252,6 +292,7 @@ Set up a production-ready Next.js frontend application with TypeScript, server-s
 
 **Performance:**
 - Next.js SSR provides fast initial load
+- Clerk middleware on edge for fast auth checks
 - Code splitting reduces bundle size
 - Tailwind CSS purges unused styles
 
@@ -263,14 +304,14 @@ Set up a production-ready Next.js frontend application with TypeScript, server-s
 ## 12. Future Extensions
 
 **Phase 2:**
-- User registration page
-- Password reset flow
-- Remember me (persistent sessions)
-- OAuth login (Google, GitHub)
-- Two-factor authentication
-- Settings page (profile, preferences)
-- Dark mode
+- Dark mode toggle
+- Settings page (user preferences, notification settings)
 - Internationalization (i18n)
 - Accessibility improvements (ARIA labels, keyboard navigation)
 - Progressive Web App (PWA) support
 - Offline mode (service workers)
+- Additional Clerk features:
+  - Organization support (multi-user teams)
+  - Multi-factor authentication (configured in Clerk Dashboard)
+  - Additional social login providers (GitHub, Microsoft)
+  - Custom user metadata via Clerk
