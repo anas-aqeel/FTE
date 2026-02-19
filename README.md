@@ -1,4 +1,4 @@
-# Personal Assistant AI Agent
+# AcademiQ
 
 > An intelligent conversational assistant that helps students stay on top of their academic commitments by aggregating information from Gmail, Google Classroom, and WhatsApp.
 
@@ -164,20 +164,35 @@ Automation/
 │   │   ├── Tech_Plan__Personal_Assistant_Agent.md
 │   │   ├── OAuth_Setup_Guide.md
 │   │   ├── WhatsApp_Group_Identification_Strategy.md
+│   │   ├── Gemini_Prompt_Templates.md
 │   │   ├── Test_Case_Scenarios_&_Edge_Cases.md
-│   │   └── Gemini_Prompt_Templates.md
+│   │   └── Conflicts_Resolution_&_Review_Response.md
 │   ├── tickets/                        # Implementation tickets
 │   │   ├── Setup_Supabase_Project_&_Core_Tables.md
+│   │   ├── Implement_Raw_Data_Tables_...md
+│   │   ├── Implement_Filtered_Data_Tables_...md
 │   │   ├── FastAPI_Project_Setup_&_Authentication.md
 │   │   ├── Celery_Setup_&_Gmail_Ingestion_Worker.md
 │   │   ├── Google_Classroom_Ingestion_Worker.md
+│   │   ├── Celery_Maintenance_Tasks_...md
 │   │   ├── WhatsApp_Service_-_Message_Monitoring_&_Buffer_Persistence.md
 │   │   ├── WhatsApp_Service_-_Hourly_Summarization_&_Backend_Integration.md
 │   │   ├── Conversational_Agent_with_Gemini_Integration.md
+│   │   ├── Conversation_Management_API.md
+│   │   ├── Sync_Status_&_Data_Management_Endpoints.md
 │   │   ├── Next.js_Frontend_-_Authentication_&_Layout.md
 │   │   ├── Next.js_Frontend_-_Chat_Interface_&_Conversation_Management.md
-│   │   └── ...
-│   ├── agents/                         # Agent-specific documentation
+│   │   └── Docker_Compose_Setup_&_Deployment_Documentation.md
+│   ├── agents/                         # Agent specs (one per ticket)
+│   │   ├── FastAPI_Project_Setup_&_Authentication_agent.md
+│   │   ├── Setup_Supabase_Project_&_Core_Tables_agent.md
+│   │   ├── Next.js_Frontend_-_Authentication_&_Layout_agent.md
+│   │   ├── Celery_Setup_&_Gmail_Ingestion_Worker_agent.md
+│   │   ├── Google_Classroom_Ingestion_Worker_agent.md
+│   │   ├── Celery_Maintenance_Tasks_..._agent.md
+│   │   ├── Conversational_Agent_with_Gemini_Integration_agent.md
+│   │   ├── Docker_Compose_Setup_&_Deployment_Documentation_agent.md
+│   │   └── ... (one agent spec per ticket)
 │   └── CLERK_AUTH_MIGRATION.md         # Authentication migration guide
 ├── backend/                            # FastAPI application (to be created)
 ├── frontend/                           # Next.js application (to be created)

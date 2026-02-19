@@ -55,7 +55,7 @@ This system uses **two separate authentication mechanisms**:
 
 1. Go to https://dashboard.clerk.com
 2. Click **"Create Application"**
-3. Application name: **"Personal Assistant"**
+3. Application name: **"AcademiQ"**
 4. Enable sign-in options:
    - ✅ **Google** (recommended for students)
    - ✅ **Email** (fallback option)
@@ -266,11 +266,11 @@ export default function SignInPage() {
 ### Step 1: Create OAuth 2.0 Credentials
 
 1. Go to https://console.cloud.google.com
-2. Select your project (or create: "Personal Assistant Backend")
+2. Select your project (or create: "AcademiQ Backend")
 3. Navigate to **"APIs & Services"** > **"Credentials"**
 4. Click **"Create Credentials"** > **"OAuth 2.0 Client ID"**
 5. Application type: **"Web application"**
-6. Name: **"Personal Assistant API Access"**
+6. Name: **"AcademiQ API Access"**
 7. **Authorized redirect URIs:**
    - `http://localhost:3000/api/auth/google/callback` (development)
    - `https://your-domain.com/api/auth/google/callback` (production)
@@ -291,7 +291,7 @@ export default function SignInPage() {
 1. Go to **"APIs & Services"** > **"OAuth consent screen"**
 2. **User Type:** External
 3. **App Information:**
-   - App name: **"Personal Assistant"**
+   - App name: **"AcademiQ"**
    - Support email: Your email
    - Developer contact: Your email
 4. Click **"Save and Continue"**
@@ -458,7 +458,7 @@ export default function GoogleConnectionButton() {
 ```typescript
 'use client'
 
-import { useEffect } from 'use'
+import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function GoogleCallbackPage() {

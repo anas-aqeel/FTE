@@ -1,4 +1,4 @@
-# Tech Plan: Personal Assistant Agent
+# Tech Plan: AcademiQ
 
 ## Architectural Approach
 
@@ -433,7 +433,7 @@ id: UUID (PK)
 user_id: UUID (FK to users)
 important_senders: String[] (email addresses/names)
 keyword_rules: JSONB (importance keywords)
-whatsapp_group_allowlist: JSONB ({"groups": [{id, name, added_at}]} — matched by stable group ID, not name)
+whatsapp_group_allowlist: JSONB ({"groups": [{id, name, added_at, updated_at}]} — matched by stable group ID, not name)
 notification_preferences: JSONB
 created_at: Timestamp
 updated_at: Timestamp
@@ -699,7 +699,7 @@ Payload example:
 
 - Store all application data (raw, filtered, conversations, users)
 - Provide real-time capabilities (future: live sync notifications)
-- Handle authentication (future: when migrating to Clerk)
+- Provide managed PostgreSQL database (authentication handled by Clerk Auth)
 - Enforce data integrity via foreign keys and constraints
 
 **Access Patterns:**

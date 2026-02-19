@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement the core conversational agent that powers the chat interface by querying Supabase for relevant user data (filtered tables with fallback to raw tables), constructing context-aware prompts, calling Google Gemini API to generate natural language responses, and maintaining conversation history in the Personal Assistant Agent system.
+Implement the core conversational agent that powers the chat interface by querying Supabase for relevant user data (filtered tables with fallback to raw tables), constructing context-aware prompts, calling Google Gemini API to generate natural language responses, and maintaining conversation history in the AcademiQ system.
 
 ## 2. Scope
 

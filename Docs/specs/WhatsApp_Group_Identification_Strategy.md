@@ -447,12 +447,12 @@ const WhatsAppGroupSelector = () => {
   const loadData = async () => {
     try {
       // Fetch all groups user is in
-      const groupsRes = await fetch('/api/whatsapp/groups');
+      const groupsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp/groups`);
       const groups = await groupsRes.json();
       setAvailableGroups(groups);
 
       // Fetch current allowlist
-      const allowlistRes = await fetch('/api/whatsapp/allowlist');
+      const allowlistRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp/allowlist`);
       const allowlist = await allowlistRes.json();
       setCurrentAllowlist(allowlist.groups || []);
       setSelectedIds((allowlist.groups || []).map(g => g.id));
@@ -466,7 +466,7 @@ const WhatsAppGroupSelector = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await fetch('/api/whatsapp/allowlist', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp/allowlist`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ group_ids: selectedIds })

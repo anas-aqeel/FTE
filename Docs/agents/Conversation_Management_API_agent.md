@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement RESTful API endpoints in FastAPI for managing conversation threads and message history, enabling users to create, list, retrieve, and delete conversations with full message history in the Personal Assistant Agent system.
+Implement RESTful API endpoints in FastAPI for managing conversation threads and message history, enabling users to create, list, retrieve, and delete conversations with full message history in the AcademiQ system.
 
 ## 2. Scope
 

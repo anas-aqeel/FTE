@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Initialize a production-ready FastAPI backend project with Clerk Auth JWT verification, Google OAuth for API access, and API key authentication for external services, serving as the central API gateway for the Personal Assistant Agent system.
+Initialize a production-ready FastAPI backend project with Clerk Auth JWT verification, Google OAuth for API access, and API key authentication for external services, serving as the central API gateway for the AcademiQ system.
 
 ## 2. Scope
 
@@ -184,7 +184,7 @@ Initialize a production-ready FastAPI backend project with Clerk Auth JWT verifi
    - GET /google/auth-url:
      - Validate Clerk JWT (user must be authenticated)
      - Generate Google OAuth consent URL with required scopes:
-       - gmail.readonly, calendar.readonly, classroom.courses.readonly, classroom.coursework.me.readonly, classroom.announcements.readonly
+       - gmail.readonly, gmail.send, calendar.readonly, classroom.courses.readonly, classroom.coursework.me.readonly, classroom.announcements.readonly
      - Include state parameter (user_id for callback identification)
      - Return auth_url
    - GET /google/callback:

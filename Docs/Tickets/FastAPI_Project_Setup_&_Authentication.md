@@ -379,9 +379,9 @@ import os
 from app.routers import auth, webhooks
 
 app = FastAPI(
-    title="Personal Assistant API",
+    title="AcademiQ API",
     version="1.0.0",
-    description="Backend API for Personal Assistant with Clerk Auth"
+    description="Backend API for AcademiQ with Clerk Auth"
 )
 
 # CORS
@@ -399,7 +399,7 @@ app.include_router(webhooks.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Personal Assistant API with Clerk Auth"}
+    return {"message": "AcademiQ API with Clerk Auth"}
 
 
 @app.get("/health")

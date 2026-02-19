@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Create comprehensive Docker Compose configuration to orchestrate all services (backend, frontend, Celery worker, Celery Beat, Redis) and provide detailed deployment documentation for local development, production deployment, and VPS setup for the WhatsApp service in the Personal Assistant Agent system.
+Create comprehensive Docker Compose configuration to orchestrate all services (backend, frontend, Celery worker, Celery Beat, Redis) and provide detailed deployment documentation for local development, production deployment, and VPS setup for the WhatsApp service in the AcademiQ system.
 
 ## 2. Scope
 

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Create and configure the Supabase PostgreSQL database project with all foundational core tables (users, conversations, conversation_messages, sync_state, user_settings, oauth_tokens) that serve as the data backbone for the entire Personal Assistant Agent system.
+Create and configure the Supabase PostgreSQL database project with all foundational core tables (users, conversations, conversation_messages, sync_state, user_settings, oauth_tokens) that serve as the data backbone for the entire AcademiQ system.
 
 ## 2. Scope
 
@@ -33,7 +33,7 @@ Create and configure the Supabase PostgreSQL database project with all foundatio
 
 - **Supabase Account Credentials**: Login credentials for Supabase dashboard
 - **Project Configuration**:
-  - Project name: "Personal Assistant Agent" (or user-specified)
+  - Project name: "AcademiQ" (or user-specified)
   - Database password
   - Region selection
 - **Schema Definitions**: Table structures defined in Tech Plan Data Model section

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement FastAPI endpoints for querying sync status across all data sources, triggering on-demand data ingestion, marking announcements as seen, and checking ingestion job status, providing operational visibility and control for the Personal Assistant Agent system.
+Implement FastAPI endpoints for querying sync status across all data sources, triggering on-demand data ingestion, marking announcements as seen, and checking ingestion job status, providing operational visibility and control for the AcademiQ system.
 
 ## 2. Scope
 

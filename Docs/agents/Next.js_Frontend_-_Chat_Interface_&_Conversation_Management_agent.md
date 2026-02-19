@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement the complete chat interface with conversation thread management, real-time message display, sync status indicators, and "Refetch Data" functionality in the Next.js frontend for the Personal Assistant Agent system.
+Implement the complete chat interface with conversation thread management, real-time message display, sync status indicators, and "Refetch Data" functionality in the Next.js frontend for the AcademiQ system.
 
 ## 2. Scope
 

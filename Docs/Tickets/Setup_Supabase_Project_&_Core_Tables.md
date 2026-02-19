@@ -53,7 +53,7 @@ None
 
 1. Go to https://supabase.com
 2. Click "New Project"
-3. Project name: **"Personal Assistant"**
+3. Project name: **"AcademiQ"**
 4. Database password: Generate strong password (save securely)
 5. Region: Select closest to your location
 6. Click "Create new project"

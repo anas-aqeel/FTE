@@ -64,7 +64,7 @@ Set up Next.js project with **Clerk Auth** authentication and main layout struct
 ### 1. Create Next.js Project
 
 ```bash
-npx create-next-app@latest personal-assistant-frontend --typescript --tailwind --app --eslint
+npx create-next-app@latest academiq-frontend --typescript --tailwind --app --eslint
 cd personal-assistant-frontend
 ```
 
@@ -97,7 +97,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Personal Assistant',
+  title: 'AcademiQ',
   description: 'AI-powered personal assistant for students',
 }
 
@@ -229,7 +229,7 @@ export default async function DashboardLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-lg">
         <div className="p-4 border-b">
-          <h1 className="text-xl font-bold text-gray-800">Personal Assistant</h1>
+          <h1 className="text-xl font-bold text-gray-800">AcademiQ</h1>
         </div>
 
         <nav className="p-4">
@@ -518,7 +518,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Personal Assistant
+          AcademiQ
         </h1>
         <p className="text-xl text-gray-600 mb-8">
           Your AI-powered academic companion

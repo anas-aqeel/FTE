@@ -13,6 +13,10 @@ All **6 blocking/recommended issues** from the spec review have been resolved. T
 
 ---
 
+> **Note:** Cross-references in this document using `spec:69889a16-...` and `ticket:69889a16-...` prefixes point to the original Epic room where specs and tickets were authored. These IDs are retained for traceability but are not live links in the current repository. The authoritative versions of all documents are the markdown files in the `docs/` folder.
+
+---
+
 ## Issue Resolutions
 
 ### ✅ BLOCKING ISSUE #1: User Registration Not Specified (HIGH)

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement Celery worker task for Google Classroom data ingestion that fetches assignments and announcements from all enrolled courses, performs AI-based classification and importance scoring, and stores both raw and processed data in Supabase PostgreSQL for the Personal Assistant Agent system.
+Implement Celery worker task for Google Classroom data ingestion that fetches assignments and announcements from all enrolled courses, performs AI-based classification and importance scoring, and stores both raw and processed data in Supabase PostgreSQL for the AcademiQ system.
 
 ## 2. Scope
 

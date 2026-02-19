@@ -1,4 +1,4 @@
-# Epic Brief: Personal Assistant Agent
+# Epic Brief: AcademiQ
 
 ## Summary
 

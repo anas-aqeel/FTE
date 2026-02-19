@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Establish Celery distributed task queue with Redis broker and implement the Gmail ingestion worker that fetches emails and calendar event invites, performs AI-based classification and importance scoring, applies rule-based filtering, and stores both raw and processed data in Supabase PostgreSQL for the Personal Assistant Agent system.
+Establish Celery distributed task queue with Redis broker and implement the Gmail ingestion worker that fetches emails and calendar event invites, performs AI-based classification and importance scoring, applies rule-based filtering, and stores both raw and processed data in Supabase PostgreSQL for the AcademiQ system.
 
 ## 2. Scope
 

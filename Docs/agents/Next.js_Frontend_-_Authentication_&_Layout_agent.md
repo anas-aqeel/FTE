@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Set up a production-ready Next.js frontend application with TypeScript, Clerk Auth integration for authentication, main application layout structure, and API client for backend communication in the Personal Assistant Agent system.
+Set up a production-ready Next.js frontend application with TypeScript, Clerk Auth integration for authentication, main application layout structure, and API client for backend communication in the AcademiQ system.
 
 ## 2. Scope
 

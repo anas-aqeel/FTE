@@ -2,7 +2,7 @@
 
 # Test Case Scenarios & Edge Cases
 
-This document provides comprehensive test scenarios covering all components, data flows, and edge cases for the Personal Assistant Agent system.
+This document provides comprehensive test scenarios covering all components, data flows, and edge cases for the AcademiQ system.
 
 ---
 

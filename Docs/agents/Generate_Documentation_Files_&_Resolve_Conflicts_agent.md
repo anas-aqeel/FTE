@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Create a Python script that generates all project documentation files (Epic Brief, Tech Plan, tickets, test cases, conflict resolutions) in a structured docs/ folder, ready for Git commit and GitHub publishing, serving as the final deliverable for the Personal Assistant Agent project planning phase.
+Create a Python script that generates all project documentation files (Epic Brief, Tech Plan, tickets, test cases, conflict resolutions) in a structured docs/ folder, ready for Git commit and GitHub publishing, serving as the final deliverable for the AcademiQ project planning phase.
 
 ## 2. Scope
 

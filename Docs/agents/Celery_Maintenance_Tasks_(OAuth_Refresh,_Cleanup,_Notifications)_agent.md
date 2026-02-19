@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement three critical Celery maintenance tasks for the Personal Assistant Agent system: OAuth token refresh to prevent authentication failures, raw data cleanup to manage storage costs and privacy compliance, and urgent email notifications to alert users of high-importance items detected during ingestion.
+Implement three critical Celery maintenance tasks for the AcademiQ system: OAuth token refresh to prevent authentication failures, raw data cleanup to manage storage costs and privacy compliance, and urgent email notifications to alert users of high-importance items detected during ingestion.
 
 ## 2. Scope
 

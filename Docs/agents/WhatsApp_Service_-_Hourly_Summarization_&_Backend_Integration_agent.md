@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Implement hourly summarization logic using Gemini API to process accumulated WhatsApp message batches and integrate with FastAPI backend for data ingestion, enabling continuous WhatsApp monitoring with AI-generated summaries and importance scoring for the Personal Assistant Agent system.
+Implement hourly summarization logic using Gemini API to process accumulated WhatsApp message batches and integrate with FastAPI backend for data ingestion, enabling continuous WhatsApp monitoring with AI-generated summaries and importance scoring for the AcademiQ system.
 
 This agent extends the WhatsApp Service from the previous ticket (Message Monitoring & Buffer Persistence) by adding AI processing and backend communication capabilities.
 
